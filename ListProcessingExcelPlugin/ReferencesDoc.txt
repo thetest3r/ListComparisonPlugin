@@ -6,3 +6,12 @@ This compares what is in sheet 1 and not sheet 2
 Im assuming you just need to flip the code to run it against both o_o,
 
 The bolded would be what is different in sheet two
+
+
+MVP:
+An excel plugin that (destructively) compares two lists of items
+
+The current specs are:
+	-Destrutive algorithm
+	-Items across the range are treated as a single entity (string in this case)
+	-Different items from each sheet are bolded (the items will be printed out in a third sheet)
