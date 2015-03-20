@@ -36,8 +36,8 @@
         {
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
-            this.ProcessList = this.Factory.CreateRibbonButton();
-            this.instructionButton = this.Factory.CreateRibbonButton();
+            this.CompareListsButton = this.Factory.CreateRibbonButton();
+            this.HelpButton = this.Factory.CreateRibbonButton();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -50,28 +50,28 @@
             // 
             // CommandsGroup
             // 
-            this.CommandsGroup.Items.Add(this.ProcessList);
-            this.CommandsGroup.Items.Add(this.instructionButton);
+            this.CommandsGroup.Items.Add(this.CompareListsButton);
+            this.CommandsGroup.Items.Add(this.HelpButton);
             this.CommandsGroup.Label = "List Processing";
             this.CommandsGroup.Name = "CommandsGroup";
             // 
-            // ProcessList
+            // CompareListsButton
             // 
-            this.ProcessList.Label = "Test Button";
-            this.ProcessList.Name = "ProcessList";
-            this.ProcessList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessList_Click);
+            this.CompareListsButton.Label = "Compare Sheets";
+            this.CompareListsButton.Name = "CompareListsButton";
+            this.CompareListsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CompareLists_Click);
             // 
-            // instructionButton
+            // HelpButton
             // 
-            this.instructionButton.Label = "Help";
-            this.instructionButton.Name = "instructionButton";
+            this.HelpButton.Label = "Help";
+            this.HelpButton.Name = "HelpButton";
             // 
             // ExcelRibbon
             // 
             this.Name = "ExcelRibbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
             this.Tabs.Add(this.ListProcessingTab);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
+            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
             this.ListProcessingTab.ResumeLayout(false);
             this.ListProcessingTab.PerformLayout();
             this.CommandsGroup.ResumeLayout(false);
@@ -83,8 +83,8 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ListProcessingTab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup CommandsGroup;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ProcessList;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton instructionButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton CompareListsButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton HelpButton;
     }
 
     partial class ThisRibbonCollection

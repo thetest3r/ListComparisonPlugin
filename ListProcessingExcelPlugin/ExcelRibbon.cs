@@ -12,31 +12,36 @@ namespace ListProcessingExcelPlugin
 {
     public partial class ExcelRibbon
     {
-        public Excel._Application ExcelApp
+        public Excel.Application ExcelApp
         {
             get
             {
-                return (Marshal.GetActiveObject("Excel.Application") as Excel._Application);
+                return (Marshal.GetActiveObject("Excel.Application") as Excel.Application);
             }
         }
 
-        private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
+        private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
 
         }
 
-        private void ProcessList_Click(object sender, RibbonControlEventArgs e)
+        // Get column arguments from the ribbon and send it off to compare
+        private void CompareLists_Click(object sender, RibbonControlEventArgs e)
         {
-            // Get the worksheet
-            Excel._Worksheet activeWorksheet = ExcelApp.ActiveSheet;
 
-            // Get the first row and move it down to make room for the new line of text
-            Excel.Range firstRow = activeWorksheet.get_Range("A1");
-            firstRow.EntireRow.Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-
-            // Get the new first row and put text in it
-            Excel.Range newFirstRow = activeWorksheet.get_Range("A1");
-            newFirstRow.Value2 = "This text was added by using code";
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="baseSheet">The sheet in which items will be bolded if they are not in the other sheet</param>
+        /// <param name="minCol">The starting column in the range to compare (0 based)</param>
+        /// <param name="maxCol">The ending column in the range to compare (0 based)</param>
+        private void CompareLists(Excel.Worksheet baseSheet, long minCol, long maxCol)
+        {
+
+        }
+
+
     }
 }
