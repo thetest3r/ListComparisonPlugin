@@ -36,8 +36,11 @@
         {
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
-            this.ProcessList = this.Factory.CreateRibbonButton();
+            this.Sheet1ToSheet2 = this.Factory.CreateRibbonButton();
+            this.Sheet2ToSheet1 = this.Factory.CreateRibbonButton();
             this.instructionButton = this.Factory.CreateRibbonButton();
+            this.minColEditBox = this.Factory.CreateRibbonEditBox();
+            this.maxColumnEditBox = this.Factory.CreateRibbonEditBox();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -50,21 +53,39 @@
             // 
             // CommandsGroup
             // 
-            this.CommandsGroup.Items.Add(this.ProcessList);
+            this.CommandsGroup.Items.Add(this.minColEditBox);
+            this.CommandsGroup.Items.Add(this.maxColumnEditBox);
             this.CommandsGroup.Items.Add(this.instructionButton);
+            this.CommandsGroup.Items.Add(this.Sheet1ToSheet2);
+            this.CommandsGroup.Items.Add(this.Sheet2ToSheet1);
             this.CommandsGroup.Label = "List Processing";
             this.CommandsGroup.Name = "CommandsGroup";
             // 
-            // ProcessList
+            // Sheet1ToSheet2
             // 
-            this.ProcessList.Label = "Test Button";
-            this.ProcessList.Name = "ProcessList";
-            this.ProcessList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessList_Click);
+            this.Sheet1ToSheet2.Label = "Sheet1 To Sheet2";
+            this.Sheet1ToSheet2.Name = "Sheet1ToSheet2";
+            this.Sheet1ToSheet2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProcessList_Click);
+            // 
+            // Sheet2ToSheet1
+            // 
+            this.Sheet2ToSheet1.Label = "Sheet2 To Sheet1";
+            this.Sheet2ToSheet1.Name = "Sheet2ToSheet1";
             // 
             // instructionButton
             // 
             this.instructionButton.Label = "Help";
             this.instructionButton.Name = "instructionButton";
+            // 
+            // minColEditBox
+            // 
+            this.minColEditBox.Label = "MinColumn";
+            this.minColEditBox.Name = "minColEditBox";
+            // 
+            // maxColumnEditBox
+            // 
+            this.maxColumnEditBox.Label = "MaxColumn";
+            this.maxColumnEditBox.Name = "maxColumnEditBox";
             // 
             // ExcelRibbon
             // 
@@ -83,8 +104,11 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ListProcessingTab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup CommandsGroup;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton ProcessList;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton Sheet1ToSheet2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton instructionButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton Sheet2ToSheet1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox minColEditBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox maxColumnEditBox;
     }
 
     partial class ThisRibbonCollection
