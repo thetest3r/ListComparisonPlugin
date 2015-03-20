@@ -212,7 +212,7 @@
     <ManifestKeyFile>ListProcessingExcelPlugin_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8B4FFCCB9A5155F2C11E2CA580C7EB2D0E97FF75</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>48BE9332948E9F8C15BDDB7A206D1708DAF9AF67</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

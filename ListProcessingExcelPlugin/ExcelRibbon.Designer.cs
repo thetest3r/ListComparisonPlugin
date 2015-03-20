@@ -34,26 +34,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tab1 = this.Factory.CreateRibbonTab();
-            this.group1 = this.Factory.CreateRibbonGroup();
+            this.ListProcessingTab = this.Factory.CreateRibbonTab();
+            this.CommandsGroup = this.Factory.CreateRibbonGroup();
             this.ProcessList = this.Factory.CreateRibbonButton();
             this.instructionButton = this.Factory.CreateRibbonButton();
-            this.tab1.SuspendLayout();
-            this.group1.SuspendLayout();
+            this.ListProcessingTab.SuspendLayout();
+            this.CommandsGroup.SuspendLayout();
             // 
-            // tab1
+            // ListProcessingTab
             // 
-            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Groups.Add(this.group1);
-            this.tab1.Label = "TabAddIns";
-            this.tab1.Name = "tab1";
+            this.ListProcessingTab.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.ListProcessingTab.Groups.Add(this.CommandsGroup);
+            this.ListProcessingTab.Label = "TabAddIns";
+            this.ListProcessingTab.Name = "ListProcessingTab";
             // 
-            // group1
+            // CommandsGroup
             // 
-            this.group1.Items.Add(this.ProcessList);
-            this.group1.Items.Add(this.instructionButton);
-            this.group1.Label = "List Processing";
-            this.group1.Name = "group1";
+            this.CommandsGroup.Items.Add(this.ProcessList);
+            this.CommandsGroup.Items.Add(this.instructionButton);
+            this.CommandsGroup.Label = "List Processing";
+            this.CommandsGroup.Name = "CommandsGroup";
             // 
             // ProcessList
             // 
@@ -70,19 +70,19 @@
             // 
             this.Name = "ExcelRibbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.tab1);
+            this.Tabs.Add(this.ListProcessingTab);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
-            this.tab1.ResumeLayout(false);
-            this.tab1.PerformLayout();
-            this.group1.ResumeLayout(false);
-            this.group1.PerformLayout();
+            this.ListProcessingTab.ResumeLayout(false);
+            this.ListProcessingTab.PerformLayout();
+            this.CommandsGroup.ResumeLayout(false);
+            this.CommandsGroup.PerformLayout();
 
         }
 
         #endregion
 
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab ListProcessingTab;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup CommandsGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ProcessList;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton instructionButton;
     }
