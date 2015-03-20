@@ -36,8 +36,11 @@
         {
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
-            this.CompareListsButton = this.Factory.CreateRibbonButton();
-            this.HelpButton = this.Factory.CreateRibbonButton();
+            this.minColEditBox = this.Factory.CreateRibbonEditBox();
+            this.maxColEditBox = this.Factory.CreateRibbonEditBox();
+            this.helpButton = this.Factory.CreateRibbonButton();
+            this.Sheet1ToSheet2 = this.Factory.CreateRibbonButton();
+            this.Sheet2ToSheet1 = this.Factory.CreateRibbonButton();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -50,21 +53,42 @@
             // 
             // CommandsGroup
             // 
-            this.CommandsGroup.Items.Add(this.CompareListsButton);
-            this.CommandsGroup.Items.Add(this.HelpButton);
+            this.CommandsGroup.Items.Add(this.minColEditBox);
+            this.CommandsGroup.Items.Add(this.maxColEditBox);
+            this.CommandsGroup.Items.Add(this.helpButton);
+            this.CommandsGroup.Items.Add(this.Sheet1ToSheet2);
+            this.CommandsGroup.Items.Add(this.Sheet2ToSheet1);
             this.CommandsGroup.Label = "List Processing";
             this.CommandsGroup.Name = "CommandsGroup";
             // 
-            // CompareListsButton
+            // minColEditBox
             // 
-            this.CompareListsButton.Label = "Compare Sheets";
-            this.CompareListsButton.Name = "CompareListsButton";
-            this.CompareListsButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CompareLists_Click);
+            this.minColEditBox.Label = "MinColumn";
+            this.minColEditBox.Name = "minColEditBox";
+            this.minColEditBox.Text = null;
             // 
-            // HelpButton
+            // maxColEditBox
             // 
-            this.HelpButton.Label = "Help";
-            this.HelpButton.Name = "HelpButton";
+            this.maxColEditBox.Label = "MaxColumn";
+            this.maxColEditBox.Name = "maxColEditBox";
+            this.maxColEditBox.Text = null;
+            // 
+            // helpButton
+            // 
+            this.helpButton.Label = "Help";
+            this.helpButton.Name = "helpButton";
+            // 
+            // Sheet1ToSheet2
+            // 
+            this.Sheet1ToSheet2.Label = "Sheet1 To Sheet2";
+            this.Sheet1ToSheet2.Name = "Sheet1ToSheet2";
+            this.Sheet1ToSheet2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CompareSheet1_Click);
+            // 
+            // Sheet2ToSheet1
+            // 
+            this.Sheet2ToSheet1.Label = "Sheet2 To Sheet1";
+            this.Sheet2ToSheet1.Name = "Sheet2ToSheet1";
+            this.Sheet2ToSheet1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CompareSheet2_Click);
             // 
             // ExcelRibbon
             // 
@@ -84,7 +108,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonTab ListProcessingTab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup CommandsGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton CompareListsButton;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton HelpButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton Sheet1ToSheet2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton helpButton;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton Sheet2ToSheet1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox minColEditBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox maxColEditBox;
     }
 
     partial class ThisRibbonCollection
