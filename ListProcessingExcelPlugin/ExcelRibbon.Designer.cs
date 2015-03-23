@@ -66,12 +66,14 @@
             this.minColEditBox.Label = "MinColumn";
             this.minColEditBox.Name = "minColEditBox";
             this.minColEditBox.Text = null;
+            this.minColEditBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.minColEditBox_TextChanged);
             // 
             // maxColEditBox
             // 
             this.maxColEditBox.Label = "MaxColumn";
             this.maxColEditBox.Name = "maxColEditBox";
             this.maxColEditBox.Text = null;
+            this.maxColEditBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.maxColEditBox_TextChanged);
             // 
             // helpButton
             // 

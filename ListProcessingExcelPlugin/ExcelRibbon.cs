@@ -8,6 +8,7 @@ using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ListProcessingExcelPlugin
 {
@@ -26,21 +27,99 @@ namespace ListProcessingExcelPlugin
 
         }
 
+        private void minColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            SelectColumnsInRange();
+
+            
+            //Excel.Range firstRow = activeWorksheet.get_Range("A1");
+            //firstRow.EntireRow.Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+            //Excel.Range newFirstRow = activeWorksheet.get_Range("A1");
+            //newFirstRow.Value2 = "This text was added by using code";
+        }
+
+        private void maxColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            SelectColumnsInRange();
+        }
+
+        private void SelectColumnsInRange()
+        {
+            Excel.Worksheet activeWorksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
+
+            string minCol = minColEditBox.Text;
+            string maxCol = maxColEditBox.Text;
+
+            if (ValidateColumnInput(minCol, maxCol, false))
+            {
+                Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
+                rng.EntireColumn.Select();
+            }
+        }
+
         // Get column arguments from the ribbon and send it off to compare
         private void CompareSheet1_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet, compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
-            string minCol = "A", maxCol = "C";
+            string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
 
-            CompareLists(baseSheet, compareSheet, minCol, maxCol);
+            if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
+            {
+                Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
+                Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
+                CompareLists(baseSheet, compareSheet, minCol, maxCol);
+            }
         }
 
         private void CompareSheet2_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Worksheet baseSheet = ExcelApp.Worksheets[1], compareSheet = ExcelApp.Worksheets[0];
-            string minCol = "A", maxCol = "C";
+            string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
 
-            CompareLists(baseSheet, compareSheet, minCol, maxCol);
+            if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
+            {
+                Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
+                Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
+                CompareLists(baseSheet, compareSheet, minCol, maxCol);
+            }
+        }
+
+        private bool ValidateSheets()
+        {
+            // Make sure the user has two sheets to compare with
+            if (ExcelApp.Worksheets.Count < 2)
+            {
+                MessageBox.Show("You must have at least two sheets. The first two sheets should contain your lists.");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool ValidateColumnInput(string minCol, string maxCol, bool displayErrorMessages)
+        {
+            // Verify that the column inputs contain only characters
+            bool minColIllegal = Regex.IsMatch(minCol, "[^a-z|A-Z]");
+            bool maxColIllegal = Regex.IsMatch(maxCol, "[^a-z|A-Z]");
+
+            if (minColIllegal || maxColIllegal)
+            {
+                if (displayErrorMessages)
+                    MessageBox.Show("The column inputs can only contain letters that represent columns");
+                return false;
+            }
+            
+
+            // Verify that the minimum column is less than the maximum column
+            int comparisonResult = minCol.CompareTo(maxCol); // Compare yields -1 is less than, 0 if equal, 1 if greater than
+            
+            if (comparisonResult != -1)
+            {
+                if (displayErrorMessages)
+                    MessageBox.Show("The minimum column range must be less than the maximum column range");
+                return false;
+            }
+                
+            // Input is correct
+            return true;
         }
 
         /// <summary>
@@ -53,6 +132,8 @@ namespace ListProcessingExcelPlugin
         {
             MessageBox.Show("Comparing " + baseSheet.Name + " to " + compareSheet.Name);
         }
+
+        
 
         
 
