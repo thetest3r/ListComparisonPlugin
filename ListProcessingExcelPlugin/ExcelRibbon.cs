@@ -131,6 +131,18 @@ namespace ListProcessingExcelPlugin
         private void CompareLists(Excel.Worksheet baseSheet, Excel.Worksheet compareSheet, string minCol, string maxCol)
         {
             MessageBox.Show("Comparing " + baseSheet.Name + " to " + compareSheet.Name);
+
+            //Gets the range and columns in the worksheet that are used. Range will be used to loop, and col to keep data intact
+            //TODO: Potential documentation that will assist in helping out
+            //https://support.microsoft.com/en-us/kb/302096
+            var baseTotalNumOfCols = baseSheet.UsedRange.Columns.Count;
+            var baseTotalNumOfRows = baseSheet.UsedRange.Columns.Count;
+
+            var compareTotalNumOfCols = compareSheet.UsedRange.Columns.Count;
+            var compareTotalNumOfRows = compareSheet.UsedRange.Columns.Count;
+
+
+
         }
 
         
