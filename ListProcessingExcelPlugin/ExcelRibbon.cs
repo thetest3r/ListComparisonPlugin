@@ -30,12 +30,6 @@ namespace ListProcessingExcelPlugin
         private void minColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
         {
             SelectColumnsInRange();
-
-            
-            //Excel.Range firstRow = activeWorksheet.get_Range("A1");
-            //firstRow.EntireRow.Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-            //Excel.Range newFirstRow = activeWorksheet.get_Range("A1");
-            //newFirstRow.Value2 = "This text was added by using code";
         }
 
         private void maxColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
@@ -94,7 +88,7 @@ namespace ListProcessingExcelPlugin
             return true;
         }
 
-        public bool ValidateColumnInput(string minCol, string maxCol, bool displayErrorMessages)
+        private bool ValidateColumnInput(string minCol, string maxCol, bool displayErrorMessages)
         {
             // Verify that the column inputs contain only characters
             bool minColIllegal = Regex.IsMatch(minCol, "[^a-z|A-Z]");
@@ -106,18 +100,18 @@ namespace ListProcessingExcelPlugin
                     MessageBox.Show("The column inputs can only contain letters that represent columns");
                 return false;
             }
-            
+
 
             // Verify that the minimum column is less than the maximum column
             int comparisonResult = minCol.CompareTo(maxCol); // Compare yields -1 is less than, 0 if equal, 1 if greater than
-            
+
             if (comparisonResult != -1)
             {
                 if (displayErrorMessages)
                     MessageBox.Show("The minimum column range must be less than the maximum column range");
                 return false;
             }
-                
+
             // Input is correct
             return true;
         }
@@ -130,12 +124,27 @@ namespace ListProcessingExcelPlugin
         /// <param name="maxCol">The ending column in the range to compare (0 based)</param>
         private void CompareLists(Excel.Worksheet baseSheet, Excel.Worksheet compareSheet, string minCol, string maxCol)
         {
-            MessageBox.Show("Comparing " + baseSheet.Name + " to " + compareSheet.Name);
+            //MessageBox.Show("Comparing " + baseSheet.Name + " to " + compareSheet.Name);
+
+            //for (int i = 0; i < baseSheet.Rows.Count; i++)
+            //{
+            //    Range row = baseSheet.Rows[i];
+                
+
+
+            //}
+
+
+            //Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
+            //rng.EntireColumn.Select();
+
+
+
         }
 
-        
 
-        
+
+
 
 
     }
