@@ -27,6 +27,7 @@ namespace ListProcessingExcelPlugin
 
         }
 
+
         private void minColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
         {
             SelectColumnsInRange();
@@ -55,24 +56,28 @@ namespace ListProcessingExcelPlugin
         private void CompareSheet1_Click(object sender, RibbonControlEventArgs e)
         {
             string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
+            bool headerRow = headerRowCheckBox.Checked;
 
             if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
             {
                 Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
                 Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
-                CompareLists(baseSheet, compareSheet, minCol, maxCol);
+                List<int> sheet1Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
+                DeleteUnmatchedRows(baseSheet, sheet1Indices, headerRow);
             }
         }
 
         private void CompareSheet2_Click(object sender, RibbonControlEventArgs e)
         {
             string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
+            bool headerRow = headerRowCheckBox.Checked;
 
             if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
             {
-                Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
-                Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
-                CompareLists(baseSheet, compareSheet, minCol, maxCol);
+                Excel.Worksheet baseSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
+                Excel.Worksheet compareSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
+                List<int> sheet2Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
+                DeleteUnmatchedRows(baseSheet, sheet2Indices, headerRow);
             }
         }
 
@@ -117,34 +122,111 @@ namespace ListProcessingExcelPlugin
         }
 
         /// <summary>
-        /// 
+        /// Compare every row in the base sheet to every row in the compare sheet and looks for matches. The users parameters determine exactly what is compared
         /// </summary>
         /// <param name="baseSheet">The sheet in which items will be bolded if they are not in the other sheet</param>
         /// <param name="minCol">The starting column in the range to compare (0 based)</param>
         /// <param name="maxCol">The ending column in the range to compare (0 based)</param>
-        private void CompareLists(Excel.Worksheet baseSheet, Excel.Worksheet compareSheet, string minCol, string maxCol)
+        /// <returns>Returns a list of row indices in the base sheet that have matches in the compare sheet</returns>
+        private List<int> CompareLists(Excel.Worksheet baseSheet, Excel.Worksheet compareSheet, string minCol, string maxCol, bool headerRow)
         {
-            //MessageBox.Show("Comparing " + baseSheet.Name + " to " + compareSheet.Name);
+            List<int> baseSheetIndices = new List<int>();
 
-            //for (int i = 0; i < baseSheet.Rows.Count; i++)
-            //{
-            //    Range row = baseSheet.Rows[i];
-                
+            //Gets the range and columns in the worksheet that are used. Range will be used to loop, and col to keep data intact
+            var baseTotalNumOfCols = baseSheet.UsedRange.Columns.Count;
+            var baseTotalNumOfRows = baseSheet.UsedRange.Rows.Count;
 
+            var compareTotalNumOfCols = compareSheet.UsedRange.Columns.Count;
+            var compareTotalNumOfRows = compareSheet.UsedRange.Rows.Count;
 
-            //}
+            // Compare each row in the base sheet to every row in the compare sheet
+            // If a match is found, save the current row's index
+            for (int i = (!headerRow) ? 1 : 2; i <= baseTotalNumOfRows; i++)
+            {
+                StringBuilder sb = new StringBuilder();
 
+                // Create the comparison string for the row in the base sheet
+                for (int j = 1; j <= baseTotalNumOfCols; j++)
+                {
+                    string colName = GetColNameFromIndex(j);
 
-            //Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
-            //rng.EntireColumn.Select();
+                    // Make sure to not go past the max column
+                    if (colName.CompareTo(maxCol.ToUpper()) <= 0)
+                    {
+                        // Add each cells' contents to the string
+                        Range cell = baseSheet.Cells[i, j] as Range;
+                        sb.Append((cell.Value as string).Trim());
+                    }
+                    else
+                        break;
+                }
 
+                // Compare the row in the base sheet with every row in the compare sheet
+                for (int k = (!headerRow) ? 1 : 2; k <= compareTotalNumOfRows; k++)
+                {
+                    StringBuilder sb1 = new StringBuilder();
 
+                    // Create the comparison string for the row in the compare sheet
+                    for (int j = 1; j <= compareTotalNumOfCols; j++)
+                    {
+                        string colName = GetColNameFromIndex(j);
 
+                        // Make sure to not go past the max column
+                        if (colName.CompareTo(maxCol.ToUpper()) <= 0)
+                        {
+                            // Add each cells' contents to the string
+                            Range cell = compareSheet.Cells[k, j] as Range;
+                            sb1.Append((cell.Value as string).Trim());
+                        }
+                        else
+                            break;
+                    }
+
+                    // Compare the two rows and see if they are the same
+                    if (sb.ToString() == sb1.ToString())
+                    {
+                        baseSheetIndices.Add(i);
+                        break;
+                    }
+                }
+            }
+
+            return baseSheetIndices;
         }
 
 
+        private void DeleteUnmatchedRows(Excel.Worksheet sheet, List<int> rowIndices, bool headerRow)
+        {
+            var totalNumOfRows = sheet.UsedRange.Rows.Count;
+            int deletedRows = 0; // This is needed to prevent deleting the incorrect rows
+
+            for (int i = (!headerRow) ? 1 : 2; i <= totalNumOfRows; i++)
+            {
+                if (!rowIndices.Contains(i))
+                {
+                    Range row = sheet.Rows[i - deletedRows];
+                    row.Delete();
+                    deletedRows++;
+                }
+            }
+        }
 
 
+        private static string GetColNameFromIndex(int columnNumber)
+        {
+            int dividend = columnNumber;
+            string columnName = String.Empty;
+            int modulo;
+
+            while (dividend > 0)
+            {
+                modulo = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                dividend = (int)((dividend - modulo) / 26);
+            }
+
+            return columnName;
+        }
 
 
     }

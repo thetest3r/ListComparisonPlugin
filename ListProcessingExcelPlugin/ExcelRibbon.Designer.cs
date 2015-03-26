@@ -41,6 +41,7 @@
             this.helpButton = this.Factory.CreateRibbonButton();
             this.Sheet1ToSheet2 = this.Factory.CreateRibbonButton();
             this.Sheet2ToSheet1 = this.Factory.CreateRibbonButton();
+            this.headerRowCheckBox = this.Factory.CreateRibbonCheckBox();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -55,23 +56,26 @@
             // 
             this.CommandsGroup.Items.Add(this.minColEditBox);
             this.CommandsGroup.Items.Add(this.maxColEditBox);
-            this.CommandsGroup.Items.Add(this.helpButton);
+            this.CommandsGroup.Items.Add(this.headerRowCheckBox);
             this.CommandsGroup.Items.Add(this.Sheet1ToSheet2);
             this.CommandsGroup.Items.Add(this.Sheet2ToSheet1);
+            this.CommandsGroup.Items.Add(this.helpButton);
             this.CommandsGroup.Label = "List Processing";
             this.CommandsGroup.Name = "CommandsGroup";
             // 
             // minColEditBox
             // 
-            this.minColEditBox.Label = "MinColumn";
+            this.minColEditBox.Label = "Min Column";
             this.minColEditBox.Name = "minColEditBox";
+            this.minColEditBox.SuperTip = "The lower boundary in the desired column range";
             this.minColEditBox.Text = null;
             this.minColEditBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.minColEditBox_TextChanged);
             // 
             // maxColEditBox
             // 
-            this.maxColEditBox.Label = "MaxColumn";
+            this.maxColEditBox.Label = "Max Column";
             this.maxColEditBox.Name = "maxColEditBox";
+            this.maxColEditBox.SuperTip = "The upper boundary in the desired column range";
             this.maxColEditBox.Text = null;
             this.maxColEditBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.maxColEditBox_TextChanged);
             // 
@@ -82,15 +86,21 @@
             // 
             // Sheet1ToSheet2
             // 
-            this.Sheet1ToSheet2.Label = "Sheet1 To Sheet2";
+            this.Sheet1ToSheet2.Label = "Sheet1 to Sheet2";
             this.Sheet1ToSheet2.Name = "Sheet1ToSheet2";
             this.Sheet1ToSheet2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CompareSheet1_Click);
             // 
             // Sheet2ToSheet1
             // 
-            this.Sheet2ToSheet1.Label = "Sheet2 To Sheet1";
+            this.Sheet2ToSheet1.Label = "Sheet2 to Sheet1";
             this.Sheet2ToSheet1.Name = "Sheet2ToSheet1";
             this.Sheet2ToSheet1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CompareSheet2_Click);
+            // 
+            // headerRowCheckBox
+            // 
+            this.headerRowCheckBox.Checked = true;
+            this.headerRowCheckBox.Label = "Header Row?";
+            this.headerRowCheckBox.Name = "headerRowCheckBox";
             // 
             // ExcelRibbon
             // 
@@ -115,6 +125,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Sheet2ToSheet1;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox minColEditBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox maxColEditBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox headerRowCheckBox;
     }
 
     partial class ThisRibbonCollection
