@@ -24,6 +24,11 @@ namespace ListProcessingExcelPlugin
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
+            // Get a list of the sheets
+
+
+            // Change the buttons' labels to the first two sheets names
+
 
         }
 
@@ -110,10 +115,10 @@ namespace ListProcessingExcelPlugin
             // Verify that the minimum column is less than the maximum column
             int comparisonResult = minCol.CompareTo(maxCol); // Compare yields -1 is less than, 0 if equal, 1 if greater than
 
-            if (comparisonResult != -1)
+            if (comparisonResult == 1)
             {
                 if (displayErrorMessages)
-                    MessageBox.Show("The minimum column range must be less than the maximum column range");
+                    MessageBox.Show("The minimum column range must be less than or equal to the maximum column range");
                 return false;
             }
 
@@ -155,7 +160,7 @@ namespace ListProcessingExcelPlugin
                     {
                         // Add each cells' contents to the string
                         Range cell = baseSheet.Cells[i, j] as Range;
-                        sb.Append((cell.Value as string).Trim());
+                        sb.Append(Convert.ToString(cell.Value).Trim());
                     }
                     else
                         break;
@@ -176,7 +181,7 @@ namespace ListProcessingExcelPlugin
                         {
                             // Add each cells' contents to the string
                             Range cell = compareSheet.Cells[k, j] as Range;
-                            sb1.Append((cell.Value as string).Trim());
+                            sb1.Append(Convert.ToString(cell.Value).Trim());
                         }
                         else
                             break;
