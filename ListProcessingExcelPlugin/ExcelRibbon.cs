@@ -24,13 +24,10 @@ namespace ListProcessingExcelPlugin
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-            // Get a list of the sheets
-
-
-            // Change the buttons' labels to the first two sheets names
-
-
+            
         }
+
+
 
 
         private void minColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
@@ -68,22 +65,25 @@ namespace ListProcessingExcelPlugin
                 Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
                 Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
                 List<int> sheet1Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
-                DeleteUnmatchedRows(baseSheet, sheet1Indices, headerRow);
+                List<int> sheet2Indices = CompareLists(compareSheet, baseSheet, minCol, maxCol, headerRow);
+                //DeleteUnmatchedRows(baseSheet, sheet1Indices, headerRow);
+                DisplayResults(sheet1Indices, sheet2Indices, headerRow);
             }
         }
 
         private void CompareSheet2_Click(object sender, RibbonControlEventArgs e)
         {
-            string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
-            bool headerRow = headerRowCheckBox.Checked;
+            //string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
+            //bool headerRow = headerRowCheckBox.Checked;
 
-            if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
-            {
-                Excel.Worksheet baseSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
-                Excel.Worksheet compareSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
-                List<int> sheet2Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
-                DeleteUnmatchedRows(baseSheet, sheet2Indices, headerRow);
-            }
+            //if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
+            //{
+            //    Excel.Worksheet baseSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
+            //    Excel.Worksheet compareSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
+            //    List<int> sheet2Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
+            //    //DeleteUnmatchedRows(baseSheet, sheet2Indices, headerRow);
+            //    //DisplayResults(sheet2Indices, headerRow);
+            //}
         }
 
         private bool ValidateSheets()
@@ -126,13 +126,16 @@ namespace ListProcessingExcelPlugin
             return true;
         }
 
+
+
+
         /// <summary>
         /// Compare every row in the base sheet to every row in the compare sheet and looks for matches. The users parameters determine exactly what is compared
         /// </summary>
         /// <param name="baseSheet">The sheet in which items will be bolded if they are not in the other sheet</param>
         /// <param name="minCol">The starting column in the range to compare (0 based)</param>
         /// <param name="maxCol">The ending column in the range to compare (0 based)</param>
-        /// <returns>Returns a list of row indices in the base sheet that have matches in the compare sheet</returns>
+        /// <returns>Returns a list of row indices in the base sheet that do not have matches in the compare sheet</returns>
         private List<int> CompareLists(Excel.Worksheet baseSheet, Excel.Worksheet compareSheet, string minCol, string maxCol, bool headerRow)
         {
             List<int> baseSheetIndices = new List<int>();
@@ -149,7 +152,7 @@ namespace ListProcessingExcelPlugin
             for (int i = (!headerRow) ? 1 : 2; i <= baseTotalNumOfRows; i++)
             {
                 StringBuilder sb = new StringBuilder();
-
+                bool matchFound = false;
                 // Create the comparison string for the row in the base sheet
                 for (int j = 1; j <= baseTotalNumOfCols; j++)
                 {
@@ -190,9 +193,15 @@ namespace ListProcessingExcelPlugin
                     // Compare the two rows and see if they are the same
                     if (sb.ToString() == sb1.ToString())
                     {
-                        baseSheetIndices.Add(i);
+                        matchFound = true;
                         break;
                     }
+                }
+
+                // If a similar entry was not found in the other list, add it to the list
+                if (!matchFound)
+                {
+                    baseSheetIndices.Add(i);
                 }
             }
 
@@ -200,22 +209,99 @@ namespace ListProcessingExcelPlugin
         }
 
 
-        private void DeleteUnmatchedRows(Excel.Worksheet sheet, List<int> rowIndices, bool headerRow)
-        {
-            var totalNumOfRows = sheet.UsedRange.Rows.Count;
-            int deletedRows = 0; // This is needed to prevent deleting the incorrect rows
+        //private void DeleteUnmatchedRows(Excel.Worksheet sheet, List<int> rowIndices, bool headerRow)
+        //{
+        //    var totalNumOfRows = sheet.UsedRange.Rows.Count;
+        //    int deletedRows = 0; // This is needed to prevent deleting the incorrect rows
 
-            for (int i = (!headerRow) ? 1 : 2; i <= totalNumOfRows; i++)
+        //    for (int i = (!headerRow) ? 1 : 2; i <= totalNumOfRows; i++)
+        //    {
+        //        if (!rowIndices.Contains(i))
+        //        {
+        //            Range row = sheet.Rows[i - deletedRows];
+        //            row.Delete();
+        //            deletedRows++;
+        //        }
+        //    }
+        //}
+
+
+        private void DisplayResults(List<int> sheet1Indices, List<int> sheet2Indices, bool headerRow)
+        {
+            // Create a new sheet and place it immediately after the second sheet. Get a reference to the new sheet
+            Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
+            Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
+            ExcelApp.Worksheets.Add(Type.Missing, sheet2);
+            Excel.Worksheet resultsSheet = ExcelApp.Worksheets[3];
+            resultsSheet.Name = "Comparison Results";
+            int currResultsRowIndex = 1;
+
+            // Get the number of columns used by the header
+            int resultsColumnsCount = sheet1.UsedRange.Columns.Count;
+            string lastColumnLetter = GetColNameFromIndex(resultsColumnsCount);
+
+            // Display the first sheet's name on the first row
+            Range sheet1Name = resultsSheet.get_Range("A1", lastColumnLetter + "1");
+            sheet1Name.Merge();
+            sheet1Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            sheet1Name.Value = sheet1.Name;
+            currResultsRowIndex++;
+
+            // Copy the header over, if there is one
+            if (headerRow)
             {
-                if (!rowIndices.Contains(i))
+                Range header = sheet1.Rows[1];
+                Range resultsHeader = resultsSheet.Rows[currResultsRowIndex];
+                header.Copy(resultsHeader);
+                currResultsRowIndex++;
+            }
+
+            // Copy all of the rows from the first sheet to the new sheet
+            int sheet1RowsCount = sheet1.UsedRange.Rows.Count;
+
+            for (int i = (!headerRow) ? 1 : 2; i <= sheet1RowsCount; i++)
+            {
+                if (sheet1Indices.Contains(i))
                 {
-                    Range row = sheet.Rows[i - deletedRows];
-                    row.Delete();
-                    deletedRows++;
+                    Range sheet1Row = sheet1.Rows[i];
+                    Range resultsRow = resultsSheet.Rows[currResultsRowIndex];
+                    sheet1Row.Copy(resultsRow);
+                    currResultsRowIndex++;
+                }
+            }
+            currResultsRowIndex++;
+
+
+            // Display the second sheet's name on the first row
+            Range sheet2Name = resultsSheet.get_Range("A" + currResultsRowIndex.ToString(), lastColumnLetter + currResultsRowIndex.ToString());
+            sheet2Name.Merge();
+            sheet2Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            sheet2Name.Value = sheet2.Name;
+            currResultsRowIndex++;
+
+            // Copy the header over, if there is one
+            if (headerRow)
+            {
+                Range header = sheet2.Rows[1];
+                Range resultsHeader = resultsSheet.Rows[currResultsRowIndex];
+                header.Copy(resultsHeader);
+                currResultsRowIndex++;
+            }
+
+            // Copy all of the rows from the second sheet to the new sheet
+            int sheet2RowsCount = sheet2.UsedRange.Rows.Count;
+
+            for (int i = (!headerRow) ? 1 : 2; i <= sheet2RowsCount; i++)
+            {
+                if (sheet2Indices.Contains(i))
+                {
+                    Range sheet2Row = sheet2.Rows[i];
+                    Range resultsRow = resultsSheet.Rows[currResultsRowIndex];
+                    sheet2Row.Copy(resultsRow);
+                    currResultsRowIndex++;
                 }
             }
         }
-
 
         private static string GetColNameFromIndex(int columnNumber)
         {
