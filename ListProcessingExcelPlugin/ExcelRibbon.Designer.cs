@@ -36,12 +36,10 @@
         {
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
-            this.Sheet1RangeBox = this.Factory.CreateRibbonEditBox();
-            this.box1 = this.Factory.CreateRibbonBox();
+            this.sheet1RangeBox = this.Factory.CreateRibbonEditBox();
             this.sheet1HeaderCheckBox = this.Factory.CreateRibbonCheckBox();
             this.separator1 = this.Factory.CreateRibbonSeparator();
             this.sheet2RangeBox = this.Factory.CreateRibbonEditBox();
-            this.box2 = this.Factory.CreateRibbonBox();
             this.sheet2HeaderCheckBox = this.Factory.CreateRibbonCheckBox();
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.CompareListsButton = this.Factory.CreateRibbonButton();
@@ -58,12 +56,10 @@
             // 
             // CommandsGroup
             // 
-            this.CommandsGroup.Items.Add(this.Sheet1RangeBox);
-            this.CommandsGroup.Items.Add(this.box1);
+            this.CommandsGroup.Items.Add(this.sheet1RangeBox);
             this.CommandsGroup.Items.Add(this.sheet1HeaderCheckBox);
             this.CommandsGroup.Items.Add(this.separator1);
             this.CommandsGroup.Items.Add(this.sheet2RangeBox);
-            this.CommandsGroup.Items.Add(this.box2);
             this.CommandsGroup.Items.Add(this.sheet2HeaderCheckBox);
             this.CommandsGroup.Items.Add(this.separator2);
             this.CommandsGroup.Items.Add(this.CompareListsButton);
@@ -71,18 +67,13 @@
             this.CommandsGroup.Label = "List Comparison";
             this.CommandsGroup.Name = "CommandsGroup";
             // 
-            // Sheet1RangeBox
+            // sheet1RangeBox
             // 
-            this.Sheet1RangeBox.Label = "Sheet1 Range";
-            this.Sheet1RangeBox.MaxLength = 3;
-            this.Sheet1RangeBox.Name = "Sheet1RangeBox";
-            this.Sheet1RangeBox.SuperTip = "The lower boundary in the desired column range";
-            this.Sheet1RangeBox.Text = null;
-            this.Sheet1RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet1Range_TextChanged);
-            // 
-            // box1
-            // 
-            this.box1.Name = "box1";
+            this.sheet1RangeBox.Label = "Sheet 1 Columns";
+            this.sheet1RangeBox.Name = "sheet1RangeBox";
+            this.sheet1RangeBox.SuperTip = "The lower boundary in the desired column range";
+            this.sheet1RangeBox.Text = null;
+            this.sheet1RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet1Range_TextChanged);
             // 
             // sheet1HeaderCheckBox
             // 
@@ -96,15 +87,11 @@
             // 
             // sheet2RangeBox
             // 
-            this.sheet2RangeBox.Label = "Sheet2 Range";
+            this.sheet2RangeBox.Label = "Sheet 2 Columns";
             this.sheet2RangeBox.Name = "sheet2RangeBox";
             this.sheet2RangeBox.SuperTip = "The upper boundary in the desired column range";
             this.sheet2RangeBox.Text = null;
             this.sheet2RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet2Range_TextChanged);
-            // 
-            // box2
-            // 
-            this.box2.Name = "box2";
             // 
             // sheet2HeaderCheckBox
             // 
@@ -148,14 +135,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup CommandsGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton CompareListsButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton helpButton;
-        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox Sheet1RangeBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonEditBox sheet1RangeBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox sheet2RangeBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox sheet1HeaderCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox sheet2HeaderCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonBox box2;
     }
 
     partial class ThisRibbonCollection

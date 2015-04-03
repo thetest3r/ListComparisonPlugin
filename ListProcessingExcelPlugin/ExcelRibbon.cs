@@ -26,80 +26,113 @@ namespace ListProcessingExcelPlugin
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-            
-        }
-
-        public static void NewWorkBook()
-        {
 
         }
+
 
         //--------------------------------------------------------------------------
         // Event Handlers
         //--------------------------------------------------------------------------
+        #region
+
 
         private void Sheet1Range_TextChanged(object sender, RibbonControlEventArgs e)
         {
+            // Update the label to match the corresponding sheet name
+            //UpdateLabels();
+
+            string sheet1Columns = (sender as RibbonEditBox).Text;
+
+            // Remove all white space and extra commas from the edit box text
+            sheet1Columns = sheet1Columns.Replace(" ", "");
+            sheet1Columns = Regex.Replace(sheet1Columns, ",+", ",").Trim(',');
+
+            (sender as RibbonEditBox).Text = sheet1Columns;
+
             Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
-            //SelectColumnsInRange(sheet1);
+            SelectColumnsInRange(sheet1, (sender as RibbonEditBox).Text);
         }
 
         private void Sheet2Range_TextChanged(object sender, RibbonControlEventArgs e)
         {
+            //UpdateLabels();
+
+            string sheet2Columns = (sender as RibbonEditBox).Text;
+
+            // Remove all white space and extra commas from the edit box text
+            sheet2Columns = sheet2Columns.Replace(" ", "");
+            sheet2Columns = Regex.Replace(sheet2Columns, ",+", ",").Trim(',');
+
+            (sender as RibbonEditBox).Text = sheet2Columns;
+
             Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
-            //SelectColumnsInRange(sheet2);
+            SelectColumnsInRange(sheet2, (sender as RibbonEditBox).Text);
+        }
+
+        private void UpdateLabels()
+        {
+            Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
+            sheet1RangeBox.Label = sheet1.Name + " Columns";
+
+            if (ExcelApp.Worksheets.Count > 1)
+            {
+                Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
+                sheet2RangeBox.Label = sheet2.Name + " Columns";
+            }
         }
 
         private void CompareSheetsButton_Click(object sender, RibbonControlEventArgs e)
         {
-            string minCol = Sheet1RangeBox.Text, maxCol = sheet2RangeBox.Text;
-            bool headerRow = sheet1HeaderCheckBox.Checked;
+            string sheet1Columns = sheet1RangeBox.Text, sheet2Columns = sheet2RangeBox.Text;
+            bool sheet1HeaderRow = sheet1HeaderCheckBox.Checked, sheet2HeaderRow = sheet2HeaderCheckBox.Checked;
 
-            if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
+            if (ValidateSheets() && ValidateColumnInput(ExcelApp.Worksheets[1], sheet1Columns, true) && ValidateColumnInput(ExcelApp.Worksheets[2], sheet2Columns, true))
             {
-                Excel.Worksheet baseSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
-                Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
-                List<int> sheet1Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
-                List<int> sheet2Indices = CompareLists(compareSheet, baseSheet, minCol, maxCol, headerRow);
-                DisplayResults(sheet1Indices, sheet2Indices, headerRow);
+                string[] sheet1ColumnArray = sheet1Columns.Split(','), sheet2ColumnArray = sheet2Columns.Split(',');
+                Excel.Worksheet sheet1 = ExcelApp.Worksheets[1] as Excel.Worksheet;
+                Excel.Worksheet sheet2 = ExcelApp.Worksheets[2] as Excel.Worksheet;
+
+
+                List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
+                List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
+                DisplayResults(sheet1Indices, sheet2Indices, sheet1HeaderRow);
+            }
+        }
+
+        private void SelectColumnsInRange(Excel.Worksheet sheet, string columns)
+        {
+            if (ValidateColumnInput(sheet, columns, false))
+            {
+                // Make sure the provided sheet is selected
+                sheet.Select();
+
+                string[] columnArray = columns.ToUpper().Split(',');
+                StringBuilder columnRangeString = new StringBuilder();
+
+                foreach (string column in columnArray)
+                {
+                    // A blank column will only occur if extra commas were placed after the columns
+                    if (column == "")
+                        continue;
+
+                    columnRangeString.Append(column + ":" + column + ",");
+                }
+                columnRangeString.Length = columnRangeString.Length - 1;
+
+                Range range = sheet.get_Range(columnRangeString.ToString(), Type.Missing);
+                range.EntireColumn.Select();
             }
         }
 
 
-
-        private void SelectColumnsInRange(Excel.Worksheet sheet)
-        {
-            //Excel.Worksheet activeWorksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
-
-            //string minCol = Sheet1RangeBox.Text;
-            //string maxCol = sheet2RangeBox.Text;
-
-            //if (ValidateColumnInput(minCol, maxCol, false))
-            //{
-            //    Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
-            //    rng.EntireColumn.Select();
-            //}
-        }
+        #endregion
 
 
-
-        //private void SelectColumnsInRange()
-        //{
-        //    Excel.Worksheet activeWorksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
-
-        //    string minCol = Sheet1RangeBox.Text;
-        //    string maxCol = sheet2RangeBox.Text;
-
-        //    if (ValidateColumnInput(minCol, maxCol, false))
-        //    {
-        //        Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
-        //        rng.EntireColumn.Select();
-        //    }
-        //}
 
         //--------------------------------------------------------------------------
         // Validation / Input Checking
         //--------------------------------------------------------------------------
+        #region
 
         private bool ValidateSheets()
         {
@@ -113,157 +146,82 @@ namespace ListProcessingExcelPlugin
             return true;
         }
 
-        private bool ValidateColumnInput(string sheet1Range, string sheet2Range, bool displayErrorMessages)
+        private bool ValidateColumnInput(Excel.Worksheet sheet, string columns, bool displayErrorMessages)
         {
             // Verify that there is input at all
-            if (sheet1Range.Trim() == "" || sheet2Range.Trim() == "")
+            if (columns == "")
             {
                 if (displayErrorMessages)
-                    MessageBox.Show("A range of at least one column must be specified for both sheets");
+                    MessageBox.Show("A range of at least one column must be specified for " + sheet.Name, "Empty Range");
                 return false;
             }
 
             // Verify that the column inputs contain only characters
-            bool sheet1RangeIllegal = Regex.IsMatch(sheet1Range, "[^a-z|A-Z|,]");
-            bool sheet2RangeIllegal = Regex.IsMatch(sheet2Range, "[^a-z|A-Z|,]");
-
-            if (sheet1RangeIllegal || sheet2RangeIllegal)
+            if (Regex.IsMatch(columns, "[^a-z|A-Z|,]"))
             {
                 if (displayErrorMessages)
-                    MessageBox.Show("The column inputs can only contain commas and letters that represent columns");
+                    MessageBox.Show("The column input for " + sheet.Name + " can only contain commas and letters that represent columns", "Incorrect Input");
                 return false;
             }
-
-
-            // Verify that the minimum column is less than the maximum column
-            //int comparisonResult = sheet1Range.CompareTo(sheet2Range); // Compare yields -1 is less than, 0 if equal, 1 if greater than
-
-            //if (comparisonResult == 1)
-            //{
-            //    if (displayErrorMessages)
-            //        MessageBox.Show("The minimum column range must be less than or equal to the maximum column range");
-            //    return false;
-            //}
 
             // Input is correct
             return true;
         }
 
 
-        //private bool ValidateColumnInput(string minCol, string maxCol, bool displayErrorMessages)
-        //{
-        //    // Verify that there is input at all
-        //    if (minCol.Trim() == "" || maxCol.Trim() == "")
-        //    {
-        //        if (displayErrorMessages)
-        //            MessageBox.Show("A minimum and maximum column range must be specified");
-        //        return false;
-        //    }
-
-        //    // Verify that the column inputs contain only characters
-        //    bool minColIllegal = Regex.IsMatch(minCol, "[^a-z|A-Z]");
-        //    bool maxColIllegal = Regex.IsMatch(maxCol, "[^a-z|A-Z]");
-
-        //    if (minColIllegal || maxColIllegal)
-        //    {
-        //        if (displayErrorMessages)
-        //            MessageBox.Show("The column inputs can only contain letters that represent columns");
-        //        return false;
-        //    }
-
-
-        //    // Verify that the minimum column is less than the maximum column
-        //    int comparisonResult = minCol.CompareTo(maxCol); // Compare yields -1 is less than, 0 if equal, 1 if greater than
-
-        //    if (comparisonResult == 1)
-        //    {
-        //        if (displayErrorMessages)
-        //            MessageBox.Show("The minimum column range must be less than or equal to the maximum column range");
-        //        return false;
-        //    }
-
-        //    // Input is correct
-        //    return true;
-        //}
-
-
-
+        #endregion
 
 
 
         //--------------------------------------------------------------------------
-        // Validation / Input Checking
+        // Comparison Processes
         //--------------------------------------------------------------------------
+        #region
 
-
-
-        /// <summary>
-        /// Compare every row in the base sheet to every row in the compare sheet and looks for matches. The users parameters determine exactly what is compared
-        /// </summary>
-        /// <param name="baseSheet">The sheet in which items will be bolded if they are not in the other sheet</param>
-        /// <param name="minCol">The starting column in the range to compare (0 based)</param>
-        /// <param name="maxCol">The ending column in the range to compare (0 based)</param>
-        /// <returns>Returns a list of row indices in the base sheet that do not have matches in the compare sheet</returns>
-        private List<int> CompareLists(Excel.Worksheet baseSheet, Excel.Worksheet compareSheet, string minCol, string maxCol, bool headerRow)
+        private List<int> CompareLists(Excel.Worksheet sheet1, Excel.Worksheet sheet2, string[] sheet1Columns, string[] sheet2Columns, bool sheet1HeaderRow, bool sheet2HeaderRow)
         {
-            List<int> baseSheetIndices = new List<int>();
+            List<int> sheetIndices = new List<int>();
 
             //Gets the range and columns in the worksheet that are used. Range will be used to loop, and col to keep data intact
-            var baseTotalNumOfCols = baseSheet.UsedRange.Columns.Count;
-            var baseTotalNumOfRows = baseSheet.UsedRange.Rows.Count;
+            var sheet1NumOfCols = sheet1.UsedRange.Columns.Count;
+            var sheet1NumOfRows = sheet1.UsedRange.Rows.Count;
 
-            var compareTotalNumOfCols = compareSheet.UsedRange.Columns.Count;
-            var compareTotalNumOfRows = compareSheet.UsedRange.Rows.Count;
+            var sheet2NumOfCols = sheet2.UsedRange.Columns.Count;
+            var sheet2NumOfRows = sheet2.UsedRange.Rows.Count;
 
-            // Compare each row in the base sheet to every row in the compare sheet
-            // If a match is found, save the current row's index
-            for (int i = (!headerRow) ? 1 : 2; i <= baseTotalNumOfRows; i++)
+            // Compare each row in sheet1 to every row in sheet2. If a match is found, save the current row's index
+            for (int i = (!sheet1HeaderRow) ? 1 : 2; i <= sheet1NumOfRows; i++)
             {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sheet1RowString = new StringBuilder();
                 bool matchFound = false;
-                // Create the comparison string for the row in the base sheet
-                for (int j = 1; j <= baseTotalNumOfCols; j++)
+
+                // Create the comparison string for the current row in sheet 1
+                foreach (string column in sheet1Columns)
                 {
-                    string colName = GetColNameFromIndex(j);
+                    // Add each cells' contents to the string
+                    Range cell = sheet1.get_Range(column + i.ToString()); //sheet1.Cells[i, j] as Range;
 
-                    // Make sure to not go past the max column
-                    if (colName.CompareTo(maxCol.ToUpper()) <= 0)
-                    {
-                        // Add each cells' contents to the string
-                        Range cell = baseSheet.Cells[i, j] as Range;
-
-                        if (cell.Value != null)
-                            sb.Append(Convert.ToString(cell.Value).Trim());
-                    }
-                    else
-                        break;
+                    if (cell.Value != null)
+                        sheet1RowString.Append(Convert.ToString(cell.Value).Trim());
                 }
 
                 // Compare the row in the base sheet with every row in the compare sheet
-                for (int k = (!headerRow) ? 1 : 2; k <= compareTotalNumOfRows; k++)
+                for (int k = (!sheet2HeaderRow) ? 1 : 2; k <= sheet2NumOfRows; k++)
                 {
-                    StringBuilder sb1 = new StringBuilder();
+                    StringBuilder sheet2RowString = new StringBuilder();
 
-                    // Create the comparison string for the row in the compare sheet
-                    for (int j = 1; j <= compareTotalNumOfCols; j++)
+                    // Create the comparison string for the row in sheet 2
+                    foreach (string column in sheet2Columns)
                     {
-                        string colName = GetColNameFromIndex(j);
+                        // Add each cells' contents to the string
+                        Range cell = sheet2.get_Range(column + k.ToString());
 
-                        // Make sure to not go past the max column
-                        if (colName.CompareTo(maxCol.ToUpper()) <= 0)
-                        {
-                            // Add each cells' contents to the string
-                            Range cell = compareSheet.Cells[k, j] as Range;
-
-                            if (cell.Value != null)
-                                sb1.Append(Convert.ToString(cell.Value).Trim());
-                        }
-                        else
-                            break;
+                        if (cell.Value != null)
+                            sheet2RowString.Append(Convert.ToString(cell.Value).Trim());
                     }
 
                     // Compare the two rows and see if they are the same
-                    if (sb.ToString() == sb1.ToString())
+                    if (sheet1RowString.ToString() == sheet2RowString.ToString())
                     {
                         matchFound = true;
                         break;
@@ -273,14 +231,12 @@ namespace ListProcessingExcelPlugin
                 // If a similar entry was not found in the other list, add it to the list
                 if (!matchFound)
                 {
-                    baseSheetIndices.Add(i);
+                    sheetIndices.Add(i);
                 }
             }
 
-            return baseSheetIndices;
+            return sheetIndices;
         }
-
-
 
         private void DisplayResults(List<int> sheet1Indices, List<int> sheet2Indices, bool headerRow)
         {
@@ -394,7 +350,7 @@ namespace ListProcessingExcelPlugin
             return columnName;
         }
 
-        
+        #endregion
 
 
     }

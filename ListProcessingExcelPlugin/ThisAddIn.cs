@@ -20,7 +20,7 @@ namespace ListProcessingExcelPlugin
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            this.Application.WorkbookNewSheet += Application_WorkbookNewSheet;
+            //this.Application.WorkbookOpen += Application_WorkbookOpen;
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -28,10 +28,18 @@ namespace ListProcessingExcelPlugin
 
         }
 
-        void Application_WorkbookNewSheet(Excel.Workbook Wb, object Sh)
+        private void Application_WorkbookOpen(Excel.Workbook Wb)
         {
-            ExcelRibbon.NewWorkBook();
+            Excel.Worksheet sheet1 = this.Application.Worksheets[1];
+            Globals.Ribbons.Ribbon1.sheet1RangeBox.Label = sheet1.Name + " Range";
+
+            if (this.Application.Worksheets.Count > 1)
+            {
+                Excel.Worksheet sheet2 = this.Application.Worksheets[2];
+                Globals.Ribbons.Ribbon1.sheet2RangeBox.Label = sheet2.Name + " Range";
+            }
         }
+
 
         #region VSTO generated code
 
@@ -44,7 +52,7 @@ namespace ListProcessingExcelPlugin
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
             this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
-        
+
         #endregion
     }
 }
