@@ -20,13 +20,18 @@ namespace ListProcessingExcelPlugin
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            this.Application.WorkbookNewSheet += Application_WorkbookNewSheet;
         }
-
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+
         }
 
+        void Application_WorkbookNewSheet(Excel.Workbook Wb, object Sh)
+        {
+            ExcelRibbon.NewWorkBook();
+        }
 
         #region VSTO generated code
 

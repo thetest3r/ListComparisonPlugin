@@ -29,6 +29,10 @@ namespace ListProcessingExcelPlugin
             
         }
 
+        public static void NewWorkBook()
+        {
+
+        }
 
         //--------------------------------------------------------------------------
         // Event Handlers
