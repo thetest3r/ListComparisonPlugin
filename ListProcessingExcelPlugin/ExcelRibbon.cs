@@ -14,6 +14,8 @@ namespace ListProcessingExcelPlugin
 {
     public partial class ExcelRibbon
     {
+        private static int differencesSheetsCounter = 0;
+
         public Excel.Application ExcelApp
         {
             get
@@ -27,42 +29,27 @@ namespace ListProcessingExcelPlugin
             
         }
 
-        public static void NewWorkBook()
+
+        //--------------------------------------------------------------------------
+        // Event Handlers
+        //--------------------------------------------------------------------------
+
+        private void Sheet1Range_TextChanged(object sender, RibbonControlEventArgs e)
         {
-            
+            Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
+            //SelectColumnsInRange(sheet1);
         }
 
-
-        private void minColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
+        private void Sheet2Range_TextChanged(object sender, RibbonControlEventArgs e)
         {
-            SelectColumnsInRange();
+            Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
+            //SelectColumnsInRange(sheet2);
         }
 
-        private void maxColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
+        private void CompareSheetsButton_Click(object sender, RibbonControlEventArgs e)
         {
-            SelectColumnsInRange();
-        }
-
-        private void SelectColumnsInRange()
-        {
-            Excel.Worksheet activeWorksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
-
-            string minCol = minColEditBox.Text;
-            string maxCol = maxColEditBox.Text;
-
-            if (ValidateColumnInput(minCol, maxCol, false))
-            {
-                Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
-                rng.EntireColumn.Select();
-            }
-        }
-
-
-        // Get column arguments from the ribbon and send it off to compare
-        private void CompareSheet1_Click(object sender, RibbonControlEventArgs e)
-        {
-            string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
-            bool headerRow = headerRowCheckBox.Checked;
+            string minCol = Sheet1RangeBox.Text, maxCol = sheet2RangeBox.Text;
+            bool headerRow = sheet1HeaderCheckBox.Checked;
 
             if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
             {
@@ -70,25 +57,45 @@ namespace ListProcessingExcelPlugin
                 Excel.Worksheet compareSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
                 List<int> sheet1Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
                 List<int> sheet2Indices = CompareLists(compareSheet, baseSheet, minCol, maxCol, headerRow);
-                //DeleteUnmatchedRows(baseSheet, sheet1Indices, headerRow);
                 DisplayResults(sheet1Indices, sheet2Indices, headerRow);
             }
         }
 
-        private void CompareSheet2_Click(object sender, RibbonControlEventArgs e)
-        {
-            //string minCol = minColEditBox.Text, maxCol = maxColEditBox.Text;
-            //bool headerRow = headerRowCheckBox.Checked;
 
-            //if (ValidateSheets() && ValidateColumnInput(minCol, maxCol, true))
+
+        private void SelectColumnsInRange(Excel.Worksheet sheet)
+        {
+            //Excel.Worksheet activeWorksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
+
+            //string minCol = Sheet1RangeBox.Text;
+            //string maxCol = sheet2RangeBox.Text;
+
+            //if (ValidateColumnInput(minCol, maxCol, false))
             //{
-            //    Excel.Worksheet baseSheet = ExcelApp.Worksheets[2] as Excel.Worksheet;
-            //    Excel.Worksheet compareSheet = ExcelApp.Worksheets[1] as Excel.Worksheet;
-            //    List<int> sheet2Indices = CompareLists(baseSheet, compareSheet, minCol, maxCol, headerRow);
-            //    //DeleteUnmatchedRows(baseSheet, sheet2Indices, headerRow);
-            //    //DisplayResults(sheet2Indices, headerRow);
+            //    Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
+            //    rng.EntireColumn.Select();
             //}
         }
+
+
+
+        //private void SelectColumnsInRange()
+        //{
+        //    Excel.Worksheet activeWorksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
+
+        //    string minCol = Sheet1RangeBox.Text;
+        //    string maxCol = sheet2RangeBox.Text;
+
+        //    if (ValidateColumnInput(minCol, maxCol, false))
+        //    {
+        //        Range rng = activeWorksheet.get_Range(minCol + "1", maxCol + "1");
+        //        rng.EntireColumn.Select();
+        //    }
+        //}
+
+        //--------------------------------------------------------------------------
+        // Validation / Input Checking
+        //--------------------------------------------------------------------------
 
         private bool ValidateSheets()
         {
@@ -102,34 +109,87 @@ namespace ListProcessingExcelPlugin
             return true;
         }
 
-        private bool ValidateColumnInput(string minCol, string maxCol, bool displayErrorMessages)
+        private bool ValidateColumnInput(string sheet1Range, string sheet2Range, bool displayErrorMessages)
         {
-            // Verify that the column inputs contain only characters
-            bool minColIllegal = Regex.IsMatch(minCol, "[^a-z|A-Z]");
-            bool maxColIllegal = Regex.IsMatch(maxCol, "[^a-z|A-Z]");
-
-            if (minColIllegal || maxColIllegal)
+            // Verify that there is input at all
+            if (sheet1Range.Trim() == "" || sheet2Range.Trim() == "")
             {
                 if (displayErrorMessages)
-                    MessageBox.Show("The column inputs can only contain letters that represent columns");
+                    MessageBox.Show("A range of at least one column must be specified for both sheets");
+                return false;
+            }
+
+            // Verify that the column inputs contain only characters
+            bool sheet1RangeIllegal = Regex.IsMatch(sheet1Range, "[^a-z|A-Z|,]");
+            bool sheet2RangeIllegal = Regex.IsMatch(sheet2Range, "[^a-z|A-Z|,]");
+
+            if (sheet1RangeIllegal || sheet2RangeIllegal)
+            {
+                if (displayErrorMessages)
+                    MessageBox.Show("The column inputs can only contain commas and letters that represent columns");
                 return false;
             }
 
 
             // Verify that the minimum column is less than the maximum column
-            int comparisonResult = minCol.CompareTo(maxCol); // Compare yields -1 is less than, 0 if equal, 1 if greater than
+            //int comparisonResult = sheet1Range.CompareTo(sheet2Range); // Compare yields -1 is less than, 0 if equal, 1 if greater than
 
-            if (comparisonResult == 1)
-            {
-                if (displayErrorMessages)
-                    MessageBox.Show("The minimum column range must be less than or equal to the maximum column range");
-                return false;
-            }
+            //if (comparisonResult == 1)
+            //{
+            //    if (displayErrorMessages)
+            //        MessageBox.Show("The minimum column range must be less than or equal to the maximum column range");
+            //    return false;
+            //}
 
             // Input is correct
             return true;
         }
 
+
+        //private bool ValidateColumnInput(string minCol, string maxCol, bool displayErrorMessages)
+        //{
+        //    // Verify that there is input at all
+        //    if (minCol.Trim() == "" || maxCol.Trim() == "")
+        //    {
+        //        if (displayErrorMessages)
+        //            MessageBox.Show("A minimum and maximum column range must be specified");
+        //        return false;
+        //    }
+
+        //    // Verify that the column inputs contain only characters
+        //    bool minColIllegal = Regex.IsMatch(minCol, "[^a-z|A-Z]");
+        //    bool maxColIllegal = Regex.IsMatch(maxCol, "[^a-z|A-Z]");
+
+        //    if (minColIllegal || maxColIllegal)
+        //    {
+        //        if (displayErrorMessages)
+        //            MessageBox.Show("The column inputs can only contain letters that represent columns");
+        //        return false;
+        //    }
+
+
+        //    // Verify that the minimum column is less than the maximum column
+        //    int comparisonResult = minCol.CompareTo(maxCol); // Compare yields -1 is less than, 0 if equal, 1 if greater than
+
+        //    if (comparisonResult == 1)
+        //    {
+        //        if (displayErrorMessages)
+        //            MessageBox.Show("The minimum column range must be less than or equal to the maximum column range");
+        //        return false;
+        //    }
+
+        //    // Input is correct
+        //    return true;
+        //}
+
+
+
+
+
+
+        //--------------------------------------------------------------------------
+        // Validation / Input Checking
+        //--------------------------------------------------------------------------
 
 
 
@@ -167,7 +227,9 @@ namespace ListProcessingExcelPlugin
                     {
                         // Add each cells' contents to the string
                         Range cell = baseSheet.Cells[i, j] as Range;
-                        sb.Append(Convert.ToString(cell.Value).Trim());
+
+                        if (cell.Value != null)
+                            sb.Append(Convert.ToString(cell.Value).Trim());
                     }
                     else
                         break;
@@ -188,7 +250,9 @@ namespace ListProcessingExcelPlugin
                         {
                             // Add each cells' contents to the string
                             Range cell = compareSheet.Cells[k, j] as Range;
-                            sb1.Append(Convert.ToString(cell.Value).Trim());
+
+                            if (cell.Value != null)
+                                sb1.Append(Convert.ToString(cell.Value).Trim());
                         }
                         else
                             break;
@@ -213,22 +277,6 @@ namespace ListProcessingExcelPlugin
         }
 
 
-        //private void DeleteUnmatchedRows(Excel.Worksheet sheet, List<int> rowIndices, bool headerRow)
-        //{
-        //    var totalNumOfRows = sheet.UsedRange.Rows.Count;
-        //    int deletedRows = 0; // This is needed to prevent deleting the incorrect rows
-
-        //    for (int i = (!headerRow) ? 1 : 2; i <= totalNumOfRows; i++)
-        //    {
-        //        if (!rowIndices.Contains(i))
-        //        {
-        //            Range row = sheet.Rows[i - deletedRows];
-        //            row.Delete();
-        //            deletedRows++;
-        //        }
-        //    }
-        //}
-
 
         private void DisplayResults(List<int> sheet1Indices, List<int> sheet2Indices, bool headerRow)
         {
@@ -237,7 +285,26 @@ namespace ListProcessingExcelPlugin
             Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
             ExcelApp.Worksheets.Add(Type.Missing, sheet2);
             Excel.Worksheet resultsSheet = ExcelApp.Worksheets[3];
-            resultsSheet.Name = "Comparison Results";
+
+
+            bool anyDifferenceSheets = false;
+
+            // Reset the differences sheet counter if there are no such sheets
+            foreach (Excel.Worksheet sheet in ExcelApp.Worksheets)
+            {
+                if (sheet.Name.Contains("Differences"))
+                {
+                    anyDifferenceSheets = true;
+                    break;
+                }
+            }
+
+            if (!anyDifferenceSheets)
+                differencesSheetsCounter = 0;
+
+            resultsSheet.Name = (differencesSheetsCounter == 0) ? "Differences" : "Differences" + differencesSheetsCounter.ToString();
+            differencesSheetsCounter++;
+
             int currResultsRowIndex = 1;
 
             // Get the number of columns used by the header
@@ -248,7 +315,7 @@ namespace ListProcessingExcelPlugin
             Range sheet1Name = resultsSheet.get_Range("A1", lastColumnLetter + "1");
             sheet1Name.Merge();
             sheet1Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            sheet1Name.Value = sheet1.Name;
+            sheet1Name.Value = sheet1.Name + " (Rows not contained in " + sheet2.Name + ")";
             currResultsRowIndex++;
 
             // Copy the header over, if there is one
@@ -280,7 +347,7 @@ namespace ListProcessingExcelPlugin
             Range sheet2Name = resultsSheet.get_Range("A" + currResultsRowIndex.ToString(), lastColumnLetter + currResultsRowIndex.ToString());
             sheet2Name.Merge();
             sheet2Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-            sheet2Name.Value = sheet2.Name;
+            sheet2Name.Value = sheet2.Name + " (Rows not contained in " + sheet1.Name + ")";
             currResultsRowIndex++;
 
             // Copy the header over, if there is one
@@ -322,6 +389,8 @@ namespace ListProcessingExcelPlugin
 
             return columnName;
         }
+
+        
 
 
     }
