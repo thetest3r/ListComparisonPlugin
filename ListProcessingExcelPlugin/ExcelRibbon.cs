@@ -27,7 +27,10 @@ namespace ListProcessingExcelPlugin
             
         }
 
-
+        public static void NewWorkBook()
+        {
+            
+        }
 
 
         private void minColEditBox_TextChanged(object sender, RibbonControlEventArgs e)
@@ -53,6 +56,7 @@ namespace ListProcessingExcelPlugin
                 rng.EntireColumn.Select();
             }
         }
+
 
         // Get column arguments from the ribbon and send it off to compare
         private void CompareSheet1_Click(object sender, RibbonControlEventArgs e)
