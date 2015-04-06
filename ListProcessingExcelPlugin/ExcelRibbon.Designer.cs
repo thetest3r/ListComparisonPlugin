@@ -106,6 +106,7 @@
             // CompareListsButton
             // 
             this.CompareListsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.CompareListsButton.Image = global::ListProcessingExcelPlugin.Properties.Resources.Icon_39_512;
             this.CompareListsButton.Label = "Compare Lists";
             this.CompareListsButton.Name = "CompareListsButton";
             this.CompareListsButton.ShowImage = true;
@@ -113,8 +114,10 @@
             // 
             // helpButton
             // 
+            this.helpButton.Image = global::ListProcessingExcelPlugin.Properties.Resources.images;
             this.helpButton.Label = "Help";
             this.helpButton.Name = "helpButton";
+            this.helpButton.ShowImage = true;
             // 
             // ExcelRibbon
             // 
