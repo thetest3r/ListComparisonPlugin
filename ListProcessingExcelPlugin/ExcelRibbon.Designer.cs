@@ -71,7 +71,7 @@
             // 
             this.sheet1RangeBox.Label = "Sheet 1 Columns";
             this.sheet1RangeBox.Name = "sheet1RangeBox";
-            this.sheet1RangeBox.SuperTip = "The lower boundary in the desired column range";
+            this.sheet1RangeBox.SuperTip = "The columns being compared (separated by commas) i.e. a,d,b";
             this.sheet1RangeBox.Text = null;
             this.sheet1RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet1Range_TextChanged);
             // 
@@ -80,6 +80,7 @@
             this.sheet1HeaderCheckBox.Checked = true;
             this.sheet1HeaderCheckBox.Label = "Header Row?";
             this.sheet1HeaderCheckBox.Name = "sheet1HeaderCheckBox";
+            this.sheet1HeaderCheckBox.SuperTip = "Check if first sheet has a header/title row.";
             // 
             // separator1
             // 
@@ -89,7 +90,7 @@
             // 
             this.sheet2RangeBox.Label = "Sheet 2 Columns";
             this.sheet2RangeBox.Name = "sheet2RangeBox";
-            this.sheet2RangeBox.SuperTip = "The upper boundary in the desired column range";
+            this.sheet2RangeBox.SuperTip = "The columns being compared (separated by commas) i.e. a,c,b";
             this.sheet2RangeBox.Text = null;
             this.sheet2RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet2Range_TextChanged);
             // 
@@ -98,6 +99,7 @@
             this.sheet2HeaderCheckBox.Checked = true;
             this.sheet2HeaderCheckBox.Label = "Header Row?";
             this.sheet2HeaderCheckBox.Name = "sheet2HeaderCheckBox";
+            this.sheet2HeaderCheckBox.ScreenTip = "Check if second sheet has a header/title row.";
             // 
             // separator2
             // 
