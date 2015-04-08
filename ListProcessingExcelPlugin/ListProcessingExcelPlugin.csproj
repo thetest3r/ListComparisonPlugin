@@ -168,6 +168,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ExcelRibbon.resx">
       <DependentUpon>ExcelRibbon.cs</DependentUpon>
@@ -200,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReferencesDoc.txt" />
+    <None Include="Resources\images.png" />
+    <None Include="Resources\Icon_39-512.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
