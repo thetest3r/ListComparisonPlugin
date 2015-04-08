@@ -20,7 +20,7 @@ namespace ListProcessingExcelPlugin
         {
             get
             {
-                return (Marshal.GetActiveObject("Excel.Application") as Excel.Application);
+                return Globals.ThisAddIn.Application; // (Marshal.GetActiveObject("Excel.Application") as Excel.Application);
             }
         }
 
@@ -29,6 +29,40 @@ namespace ListProcessingExcelPlugin
             
         }
 
+        //--------------------------------------------------------------------------
+        // Ribbon Changes
+        //--------------------------------------------------------------------------
+        #region
+
+        public static void RepopulateSheetDropDowns()
+        {
+            var sheet1DropDown = Globals.Ribbons.Ribbon1.sheet1DropDown;
+            var sheet2DropDown = Globals.Ribbons.Ribbon1.sheet2DropDown;
+
+            sheet1DropDown.Items.Clear();
+            sheet2DropDown.Items.Clear();
+
+            foreach (Excel.Worksheet sheet in Globals.ThisAddIn.Application.Worksheets)
+            {
+                RibbonDropDownItem item1 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem(), item2 = Globals.Factory.GetRibbonFactory().CreateRibbonDropDownItem();
+                item1.Label = sheet.Name;
+                item2.Label = sheet.Name;
+
+                sheet1DropDown.Items.Add(item1);
+                sheet2DropDown.Items.Add(item2);
+            }
+
+            sheet1DropDown.SelectedItemIndex = 0;
+            sheet2DropDown.SelectedItemIndex = (sheet2DropDown.Items.Count > 1) ? 1 : -1;
+        }
+
+
+        private void sheet1DropDown_ButtonClick(object sender, RibbonControlEventArgs e)
+        {
+            RepopulateSheetDropDowns();
+        }
+
+        #endregion
 
         //--------------------------------------------------------------------------
         // Event Handlers
@@ -358,5 +392,9 @@ namespace ListProcessingExcelPlugin
         #endregion
 
 
+
+        
+
+        
     }
 }

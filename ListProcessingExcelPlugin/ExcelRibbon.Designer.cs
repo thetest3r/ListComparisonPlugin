@@ -36,16 +36,16 @@
         {
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
+            this.sheet1DropDown = this.Factory.CreateRibbonDropDown();
             this.sheet1RangeBox = this.Factory.CreateRibbonEditBox();
             this.sheet1HeaderCheckBox = this.Factory.CreateRibbonCheckBox();
             this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.sheet2DropDown = this.Factory.CreateRibbonDropDown();
             this.sheet2RangeBox = this.Factory.CreateRibbonEditBox();
             this.sheet2HeaderCheckBox = this.Factory.CreateRibbonCheckBox();
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.CompareListsButton = this.Factory.CreateRibbonButton();
             this.helpButton = this.Factory.CreateRibbonButton();
-            this.Sheet1DropDown = this.Factory.CreateRibbonDropDown();
-            this.dropDown2 = this.Factory.CreateRibbonDropDown();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -58,11 +58,11 @@
             // 
             // CommandsGroup
             // 
-            this.CommandsGroup.Items.Add(this.Sheet1DropDown);
+            this.CommandsGroup.Items.Add(this.sheet1DropDown);
             this.CommandsGroup.Items.Add(this.sheet1RangeBox);
             this.CommandsGroup.Items.Add(this.sheet1HeaderCheckBox);
             this.CommandsGroup.Items.Add(this.separator1);
-            this.CommandsGroup.Items.Add(this.dropDown2);
+            this.CommandsGroup.Items.Add(this.sheet2DropDown);
             this.CommandsGroup.Items.Add(this.sheet2RangeBox);
             this.CommandsGroup.Items.Add(this.sheet2HeaderCheckBox);
             this.CommandsGroup.Items.Add(this.separator2);
@@ -70,6 +70,12 @@
             this.CommandsGroup.Items.Add(this.helpButton);
             this.CommandsGroup.Label = "List Comparison";
             this.CommandsGroup.Name = "CommandsGroup";
+            // 
+            // sheet1DropDown
+            // 
+            this.sheet1DropDown.Label = "Sheet 1";
+            this.sheet1DropDown.Name = "sheet1DropDown";
+            this.sheet1DropDown.ButtonClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet1DropDown_ButtonClick);
             // 
             // sheet1RangeBox
             // 
@@ -90,9 +96,14 @@
             // 
             this.separator1.Name = "separator1";
             // 
+            // sheet2DropDown
+            // 
+            this.sheet2DropDown.Label = "Sheet 2";
+            this.sheet2DropDown.Name = "sheet2DropDown";
+            // 
             // sheet2RangeBox
             // 
-            this.sheet2RangeBox.Label = "Sheet 2 Columns";
+            this.sheet2RangeBox.Label = "Columns";
             this.sheet2RangeBox.Name = "sheet2RangeBox";
             this.sheet2RangeBox.SuperTip = "The columns being compared (separated by commas) i.e. a,c,b";
             this.sheet2RangeBox.Text = null;
@@ -126,16 +137,6 @@
             this.helpButton.Name = "helpButton";
             this.helpButton.ShowImage = true;
             // 
-            // Sheet1DropDown
-            // 
-            this.Sheet1DropDown.Label = "Sheet 1";
-            this.Sheet1DropDown.Name = "Sheet1DropDown";
-            // 
-            // dropDown2
-            // 
-            this.dropDown2.Label = "dropDown2";
-            this.dropDown2.Name = "dropDown2";
-            // 
             // ExcelRibbon
             // 
             this.Name = "ExcelRibbon";
@@ -161,8 +162,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox sheet2HeaderCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown Sheet1DropDown;
-        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDown2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown sheet1DropDown;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown sheet2DropDown;
     }
 
     partial class ThisRibbonCollection
