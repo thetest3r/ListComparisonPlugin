@@ -118,7 +118,7 @@ namespace ListProcessingExcelPlugin
         private void CompareSheetsButton_Click(object sender, RibbonControlEventArgs e)
         {
             string sheet1Columns = sheet1RangeBox.Text, sheet2Columns = sheet2RangeBox.Text;
-            bool sheet1HeaderRow = sheet1HeaderCheckBox.Checked, sheet2HeaderRow = sheet2HeaderCheckBox.Checked;
+            bool sheet1HeaderRow = sheet1HeaderToggle.Checked, sheet2HeaderRow = sheet2HeaderToggle.Checked;
 
             if (ValidateSheets() && ValidateColumnInput(ExcelApp.Worksheets[1], sheet1Columns, true) && ValidateColumnInput(ExcelApp.Worksheets[2], sheet2Columns, true))
             {
@@ -391,10 +391,15 @@ namespace ListProcessingExcelPlugin
 
         #endregion
 
+        private void sheet1HeaderToggle_Click(object sender, RibbonControlEventArgs e)
+        {
+            sheet1HeaderToggle.Label = sheet1HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ()";
+        }
 
+        private void sheet2HeaderToggle_Click(object sender, RibbonControlEventArgs e)
+        {
+            sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ()";
 
-        
-
-        
+        }
     }
 }
