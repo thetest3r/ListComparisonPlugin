@@ -26,7 +26,7 @@ namespace ListProcessingExcelPlugin
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-
+            
         }
 
 
@@ -94,7 +94,7 @@ namespace ListProcessingExcelPlugin
 
 
                 List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
-                List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
+                List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet2ColumnArray, sheet1ColumnArray, sheet2HeaderRow, sheet1HeaderRow);
                 DisplayResults(sheet1Indices, sheet2Indices, sheet1HeaderRow);
             }
         }
@@ -202,8 +202,9 @@ namespace ListProcessingExcelPlugin
                     Range cell = sheet1.get_Range(column + i.ToString()); //sheet1.Cells[i, j] as Range;
 
                     if (cell.Value != null)
-                        sheet1RowString.Append(Convert.ToString(cell.Value).Trim());
+                        sheet1RowString.Append(Convert.ToString(cell.Value) + ",");
                 }
+                sheet1RowString.Replace(" ", "");
 
                 // Compare the row in the base sheet with every row in the compare sheet
                 for (int k = (!sheet2HeaderRow) ? 1 : 2; k <= sheet2NumOfRows; k++)
@@ -217,8 +218,9 @@ namespace ListProcessingExcelPlugin
                         Range cell = sheet2.get_Range(column + k.ToString());
 
                         if (cell.Value != null)
-                            sheet2RowString.Append(Convert.ToString(cell.Value).Trim());
+                            sheet2RowString.Append(Convert.ToString(cell.Value) + ",");
                     }
+                    sheet2RowString.Replace(" ", "");
 
                     // Compare the two rows and see if they are the same
                     if (sheet1RowString.ToString() == sheet2RowString.ToString())
@@ -262,18 +264,20 @@ namespace ListProcessingExcelPlugin
             if (!anyDifferenceSheets)
                 differencesSheetsCounter = 0;
 
-            resultsSheet.Name = (differencesSheetsCounter == 0) ? "Differences" : "Differences" + differencesSheetsCounter.ToString();
+            resultsSheet.Name = (differencesSheetsCounter == 0) ? "Differences" : "Differences " + differencesSheetsCounter.ToString();
             differencesSheetsCounter++;
 
             int currResultsRowIndex = 1;
 
             // Get the number of columns used by the header
-            int resultsColumnsCount = sheet1.UsedRange.Columns.Count;
-            string lastColumnLetter = GetColNameFromIndex(resultsColumnsCount);
+            int sheet1ColumnsCount = sheet1.UsedRange.Columns.Count;
+            int sheet2ColumnsCount = sheet2.UsedRange.Columns.Count;
+            //string lastColumnLetter = GetColNameFromIndex(resultsColumnsCount);
 
             // Display the first sheet's name on the first row
-            Range sheet1Name = resultsSheet.get_Range("A1", lastColumnLetter + "1");
+            Range sheet1Name = resultsSheet.get_Range("A1", GetColNameFromIndex(sheet1ColumnsCount) + "1");
             sheet1Name.Merge();
+            sheet1Name.Font.Bold = true;
             sheet1Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             sheet1Name.Value = sheet1.Name + " (Rows not contained in " + sheet2.Name + ")";
             currResultsRowIndex++;
@@ -304,8 +308,9 @@ namespace ListProcessingExcelPlugin
 
 
             // Display the second sheet's name on the first row
-            Range sheet2Name = resultsSheet.get_Range("A" + currResultsRowIndex.ToString(), lastColumnLetter + currResultsRowIndex.ToString());
+            Range sheet2Name = resultsSheet.get_Range("A" + currResultsRowIndex.ToString(), GetColNameFromIndex(sheet2ColumnsCount) + currResultsRowIndex.ToString());
             sheet2Name.Merge();
+            sheet2Name.Font.Bold = true;
             sheet2Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
             sheet2Name.Value = sheet2.Name + " (Rows not contained in " + sheet1.Name + ")";
             currResultsRowIndex++;

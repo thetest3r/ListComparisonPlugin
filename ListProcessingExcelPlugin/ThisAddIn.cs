@@ -18,6 +18,7 @@ namespace ListProcessingExcelPlugin
     public partial class ThisAddIn
     {
 
+
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             //this.Application.WorkbookOpen += Application_WorkbookOpen;
@@ -26,6 +27,11 @@ namespace ListProcessingExcelPlugin
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
 
+        }
+
+        public void GetApplicationInstance()
+        {
+            
         }
 
         private void Application_WorkbookOpen(Excel.Workbook Wb)

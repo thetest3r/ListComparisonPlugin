@@ -44,6 +44,8 @@
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.CompareListsButton = this.Factory.CreateRibbonButton();
             this.helpButton = this.Factory.CreateRibbonButton();
+            this.Sheet1DropDown = this.Factory.CreateRibbonDropDown();
+            this.dropDown2 = this.Factory.CreateRibbonDropDown();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -56,9 +58,11 @@
             // 
             // CommandsGroup
             // 
+            this.CommandsGroup.Items.Add(this.Sheet1DropDown);
             this.CommandsGroup.Items.Add(this.sheet1RangeBox);
             this.CommandsGroup.Items.Add(this.sheet1HeaderCheckBox);
             this.CommandsGroup.Items.Add(this.separator1);
+            this.CommandsGroup.Items.Add(this.dropDown2);
             this.CommandsGroup.Items.Add(this.sheet2RangeBox);
             this.CommandsGroup.Items.Add(this.sheet2HeaderCheckBox);
             this.CommandsGroup.Items.Add(this.separator2);
@@ -69,7 +73,7 @@
             // 
             // sheet1RangeBox
             // 
-            this.sheet1RangeBox.Label = "Sheet 1 Columns";
+            this.sheet1RangeBox.Label = "Columns";
             this.sheet1RangeBox.Name = "sheet1RangeBox";
             this.sheet1RangeBox.SuperTip = "The lower boundary in the desired column range";
             this.sheet1RangeBox.Text = null;
@@ -114,10 +118,21 @@
             // 
             // helpButton
             // 
+            this.helpButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.helpButton.Image = global::ListProcessingExcelPlugin.Properties.Resources.images;
             this.helpButton.Label = "Help";
             this.helpButton.Name = "helpButton";
             this.helpButton.ShowImage = true;
+            // 
+            // Sheet1DropDown
+            // 
+            this.Sheet1DropDown.Label = "Sheet 1";
+            this.Sheet1DropDown.Name = "Sheet1DropDown";
+            // 
+            // dropDown2
+            // 
+            this.dropDown2.Label = "dropDown2";
+            this.dropDown2.Name = "dropDown2";
             // 
             // ExcelRibbon
             // 
@@ -144,6 +159,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox sheet2HeaderCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown Sheet1DropDown;
+        internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDown2;
     }
 
     partial class ThisRibbonCollection

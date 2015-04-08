@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListProcessingExcelPlugin", "ListProcessingExcelPlugin\ListProcessingExcelPlugin.csproj", "{06B60241-27DA-4277-A95A-15F209961EE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListComparisonPlugin", "ListProcessingExcelPlugin\ListComparisonPlugin.csproj", "{06B60241-27DA-4277-A95A-15F209961EE3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListComparisonUnitTests", "ListComparisonUnitTests\ListComparisonUnitTests.csproj", "{2AECD4FE-EAEA-4F5D-8061-261E272B1935}"
 EndProject
