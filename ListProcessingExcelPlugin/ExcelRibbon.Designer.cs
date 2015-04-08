@@ -39,12 +39,12 @@
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
             this.sheet1DropDown = this.Factory.CreateRibbonDropDown();
             this.sheet1RangeBox = this.Factory.CreateRibbonEditBox();
-            this.sheet1HeaderCheckBox = this.Factory.CreateRibbonCheckBox();
             this.separator1 = this.Factory.CreateRibbonSeparator();
             this.sheet2DropDown = this.Factory.CreateRibbonDropDown();
             this.sheet2RangeBox = this.Factory.CreateRibbonEditBox();
-            this.sheet2HeaderCheckBox = this.Factory.CreateRibbonCheckBox();
             this.separator2 = this.Factory.CreateRibbonSeparator();
+            this.sheet1HeaderToggle = this.Factory.CreateRibbonToggleButton();
+            this.sheet2HeaderToggle = this.Factory.CreateRibbonToggleButton();
             this.CompareListsButton = this.Factory.CreateRibbonButton();
             this.helpButton = this.Factory.CreateRibbonButton();
             this.ListProcessingTab.SuspendLayout();
@@ -62,11 +62,11 @@
             this.CommandsGroup.DialogLauncher = ribbonDialogLauncherImpl1;
             this.CommandsGroup.Items.Add(this.sheet1DropDown);
             this.CommandsGroup.Items.Add(this.sheet1RangeBox);
-            this.CommandsGroup.Items.Add(this.sheet1HeaderCheckBox);
+            this.CommandsGroup.Items.Add(this.sheet1HeaderToggle);
             this.CommandsGroup.Items.Add(this.separator1);
             this.CommandsGroup.Items.Add(this.sheet2DropDown);
             this.CommandsGroup.Items.Add(this.sheet2RangeBox);
-            this.CommandsGroup.Items.Add(this.sheet2HeaderCheckBox);
+            this.CommandsGroup.Items.Add(this.sheet2HeaderToggle);
             this.CommandsGroup.Items.Add(this.separator2);
             this.CommandsGroup.Items.Add(this.CompareListsButton);
             this.CommandsGroup.Items.Add(this.helpButton);
@@ -88,13 +88,6 @@
             this.sheet1RangeBox.Text = null;
             this.sheet1RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet1Range_TextChanged);
             // 
-            // sheet1HeaderCheckBox
-            // 
-            this.sheet1HeaderCheckBox.Checked = true;
-            this.sheet1HeaderCheckBox.Label = "Header Row?";
-            this.sheet1HeaderCheckBox.Name = "sheet1HeaderCheckBox";
-            this.sheet1HeaderCheckBox.SuperTip = "Check if first sheet has a header/title row.";
-            // 
             // separator1
             // 
             this.separator1.Name = "separator1";
@@ -112,16 +105,23 @@
             this.sheet2RangeBox.Text = null;
             this.sheet2RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet2Range_TextChanged);
             // 
-            // sheet2HeaderCheckBox
-            // 
-            this.sheet2HeaderCheckBox.Checked = true;
-            this.sheet2HeaderCheckBox.Label = "Header Row?";
-            this.sheet2HeaderCheckBox.Name = "sheet2HeaderCheckBox";
-            this.sheet2HeaderCheckBox.ScreenTip = "Check if second sheet has a header/title row.";
-            // 
             // separator2
             // 
             this.separator2.Name = "separator2";
+            // 
+            // sheet1HeaderToggle
+            // 
+            this.sheet1HeaderToggle.Label = "Contains Header Row ()";
+            this.sheet1HeaderToggle.Name = "sheet1HeaderToggle";
+            this.sheet1HeaderToggle.ScreenTip = "Check if first sheet has a header/title row.";
+            this.sheet1HeaderToggle.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet1HeaderToggle_Click);
+            // 
+            // sheet2HeaderToggle
+            // 
+            this.sheet2HeaderToggle.Label = "Contains Header Row ()";
+            this.sheet2HeaderToggle.Name = "sheet2HeaderToggle";
+            this.sheet2HeaderToggle.ScreenTip = "Check if second sheet has a header/title row.";
+            this.sheet2HeaderToggle.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet2HeaderToggle_Click);
             // 
             // CompareListsButton
             // 
@@ -161,12 +161,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton helpButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox sheet1RangeBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox sheet2RangeBox;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox sheet1HeaderCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox sheet2HeaderCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown sheet1DropDown;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown sheet2DropDown;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton sheet1HeaderToggle;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton sheet2HeaderToggle;
     }
 
     partial class ThisRibbonCollection
