@@ -72,7 +72,6 @@
             this.CommandsGroup.Items.Add(this.helpButton);
             this.CommandsGroup.Label = "List Comparison";
             this.CommandsGroup.Name = "CommandsGroup";
-            this.CommandsGroup.DialogLauncherClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CommandsGroup_DialogLauncherClick);
             // 
             // sheet1DropDown
             // 

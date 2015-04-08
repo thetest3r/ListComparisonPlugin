@@ -416,13 +416,12 @@ namespace ListProcessingExcelPlugin
 
         private void sheet1HeaderToggle_Click(object sender, RibbonControlEventArgs e)
         {
-            sheet1HeaderToggle.Label = sheet1HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ()";
+            sheet1HeaderToggle.Label = sheet1HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ( )";
         }
 
         private void sheet2HeaderToggle_Click(object sender, RibbonControlEventArgs e)
         {
-            sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ()";
-
+            sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ( )";
         }
     }
 }
