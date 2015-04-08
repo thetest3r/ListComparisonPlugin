@@ -34,6 +34,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncherImpl1 = this.Factory.CreateRibbonDialogLauncher();
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
             this.sheet1DropDown = this.Factory.CreateRibbonDropDown();
@@ -58,6 +59,7 @@
             // 
             // CommandsGroup
             // 
+            this.CommandsGroup.DialogLauncher = ribbonDialogLauncherImpl1;
             this.CommandsGroup.Items.Add(this.sheet1DropDown);
             this.CommandsGroup.Items.Add(this.sheet1RangeBox);
             this.CommandsGroup.Items.Add(this.sheet1HeaderCheckBox);
@@ -70,6 +72,7 @@
             this.CommandsGroup.Items.Add(this.helpButton);
             this.CommandsGroup.Label = "List Comparison";
             this.CommandsGroup.Name = "CommandsGroup";
+            this.CommandsGroup.DialogLauncherClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CommandsGroup_DialogLauncherClick);
             // 
             // sheet1DropDown
             // 

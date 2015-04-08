@@ -29,8 +29,9 @@ namespace ListProcessingExcelPlugin
             
         }
 
+
         //--------------------------------------------------------------------------
-        // Ribbon Changes
+        // Ribbon Modifiers
         //--------------------------------------------------------------------------
         #region
 
@@ -63,6 +64,8 @@ namespace ListProcessingExcelPlugin
         }
 
         #endregion
+
+
 
         //--------------------------------------------------------------------------
         // Event Handlers
@@ -117,19 +120,33 @@ namespace ListProcessingExcelPlugin
 
         private void CompareSheetsButton_Click(object sender, RibbonControlEventArgs e)
         {
+            string sheet1Name = sheet1DropDown.SelectedItem.Label, sheet2Name = sheet2DropDown.SelectedItem.Label;
             string sheet1Columns = sheet1RangeBox.Text, sheet2Columns = sheet2RangeBox.Text;
             bool sheet1HeaderRow = sheet1HeaderCheckBox.Checked, sheet2HeaderRow = sheet2HeaderCheckBox.Checked;
 
-            if (ValidateSheets() && ValidateColumnInput(ExcelApp.Worksheets[1], sheet1Columns, true) && ValidateColumnInput(ExcelApp.Worksheets[2], sheet2Columns, true))
+            if (ValidateSheetSelection() && ValidateColumnInput(ExcelApp.Worksheets[1], sheet1Columns, true) && ValidateColumnInput(ExcelApp.Worksheets[2], sheet2Columns, true))
             {
                 string[] sheet1ColumnArray = sheet1Columns.Split(','), sheet2ColumnArray = sheet2Columns.Split(',');
-                Excel.Worksheet sheet1 = ExcelApp.Worksheets[1] as Excel.Worksheet;
-                Excel.Worksheet sheet2 = ExcelApp.Worksheets[2] as Excel.Worksheet;
+                Excel.Worksheet sheet1 = null, sheet2 = null;
 
+                foreach (Excel.Worksheet sheet in ExcelApp.Worksheets)
+                {
+                    if (sheet.Name == sheet1Name)
+                        sheet1 = sheet;
+                    else if (sheet.Name == sheet2Name)
+                        sheet2 = sheet;
+                }
 
-                List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
-                List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet2ColumnArray, sheet1ColumnArray, sheet2HeaderRow, sheet1HeaderRow);
-                DisplayResults(sheet1Indices, sheet2Indices, sheet1HeaderRow);
+                if (sheet1 != null && sheet2 != null)
+                {
+                    List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
+                    List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet2ColumnArray, sheet1ColumnArray, sheet2HeaderRow, sheet1HeaderRow);
+                    DisplayResults(sheet1Indices, sheet2Indices, sheet1HeaderRow);
+                }
+                else
+                {
+                    MessageBox.Show("Error retrieving selected sheets.");
+                }
             }
         }
 
@@ -168,12 +185,18 @@ namespace ListProcessingExcelPlugin
         //--------------------------------------------------------------------------
         #region
 
-        private bool ValidateSheets()
+        private bool ValidateSheetSelection()
         {
-            // Make sure the user has two sheets to compare with
-            if (ExcelApp.Worksheets.Count < 2)
+            // Make sure the user has selected two sheets
+            if (sheet1DropDown.SelectedItemIndex == -1 || sheet2DropDown.SelectedItemIndex == -1)
             {
-                MessageBox.Show("You must have at least two sheets. The first two sheets should contain your lists.");
+                MessageBox.Show("Two sheets must be selected");
+                return false;
+            }
+
+            if (sheet1DropDown.SelectedItemIndex == sheet2DropDown.SelectedItemIndex)
+            {
+                MessageBox.Show("The first and second sheets cannot be the same");
                 return false;
             }
 
@@ -390,6 +413,11 @@ namespace ListProcessingExcelPlugin
         }
 
         #endregion
+
+        private void CommandsGroup_DialogLauncherClick(object sender, RibbonControlEventArgs e)
+        {
+            
+        }
 
 
 
