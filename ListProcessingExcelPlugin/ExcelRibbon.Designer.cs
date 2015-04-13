@@ -34,17 +34,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Microsoft.Office.Tools.Ribbon.RibbonDialogLauncher ribbonDialogLauncherImpl1 = this.Factory.CreateRibbonDialogLauncher();
             this.ListProcessingTab = this.Factory.CreateRibbonTab();
             this.CommandsGroup = this.Factory.CreateRibbonGroup();
             this.sheet1DropDown = this.Factory.CreateRibbonDropDown();
+            this.refreshButton1 = this.Factory.CreateRibbonButton();
             this.sheet1RangeBox = this.Factory.CreateRibbonEditBox();
+            this.sheet1HeaderToggle = this.Factory.CreateRibbonToggleButton();
             this.separator1 = this.Factory.CreateRibbonSeparator();
             this.sheet2DropDown = this.Factory.CreateRibbonDropDown();
+            this.refreshButton2 = this.Factory.CreateRibbonButton();
             this.sheet2RangeBox = this.Factory.CreateRibbonEditBox();
-            this.separator2 = this.Factory.CreateRibbonSeparator();
-            this.sheet1HeaderToggle = this.Factory.CreateRibbonToggleButton();
             this.sheet2HeaderToggle = this.Factory.CreateRibbonToggleButton();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
             this.CompareListsButton = this.Factory.CreateRibbonButton();
             this.helpButton = this.Factory.CreateRibbonButton();
             this.ListProcessingTab.SuspendLayout();
@@ -59,7 +60,6 @@
             // 
             // CommandsGroup
             // 
-            this.CommandsGroup.DialogLauncher = ribbonDialogLauncherImpl1;
             this.CommandsGroup.Items.Add(this.sheet1DropDown);
             this.CommandsGroup.Items.Add(this.sheet1RangeBox);
             this.CommandsGroup.Items.Add(this.sheet1HeaderToggle);
@@ -75,9 +75,15 @@
             // 
             // sheet1DropDown
             // 
+            this.sheet1DropDown.Buttons.Add(this.refreshButton1);
             this.sheet1DropDown.Label = "Sheet 1";
             this.sheet1DropDown.Name = "sheet1DropDown";
             this.sheet1DropDown.ButtonClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet1DropDown_ButtonClick);
+            // 
+            // refreshButton1
+            // 
+            this.refreshButton1.Label = "Refresh Lists";
+            this.refreshButton1.Name = "refreshButton1";
             // 
             // sheet1RangeBox
             // 
@@ -87,14 +93,28 @@
             this.sheet1RangeBox.Text = null;
             this.sheet1RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet1Range_TextChanged);
             // 
+            // sheet1HeaderToggle
+            // 
+            this.sheet1HeaderToggle.Label = "Contains Header Row (   )";
+            this.sheet1HeaderToggle.Name = "sheet1HeaderToggle";
+            this.sheet1HeaderToggle.ScreenTip = "Check if first sheet has a header/title row.";
+            this.sheet1HeaderToggle.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet1HeaderToggle_Click);
+            // 
             // separator1
             // 
             this.separator1.Name = "separator1";
             // 
             // sheet2DropDown
             // 
+            this.sheet2DropDown.Buttons.Add(this.refreshButton2);
             this.sheet2DropDown.Label = "Sheet 2";
             this.sheet2DropDown.Name = "sheet2DropDown";
+            this.sheet2DropDown.ButtonClick += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet2DropDown_ButtonClick);
+            // 
+            // refreshButton2
+            // 
+            this.refreshButton2.Label = "Refresh Lists";
+            this.refreshButton2.Name = "refreshButton2";
             // 
             // sheet2RangeBox
             // 
@@ -104,23 +124,16 @@
             this.sheet2RangeBox.Text = null;
             this.sheet2RangeBox.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Sheet2Range_TextChanged);
             // 
-            // separator2
-            // 
-            this.separator2.Name = "separator2";
-            // 
-            // sheet1HeaderToggle
-            // 
-            this.sheet1HeaderToggle.Label = "Contains Header Row ()";
-            this.sheet1HeaderToggle.Name = "sheet1HeaderToggle";
-            this.sheet1HeaderToggle.ScreenTip = "Check if first sheet has a header/title row.";
-            this.sheet1HeaderToggle.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet1HeaderToggle_Click);
-            // 
             // sheet2HeaderToggle
             // 
-            this.sheet2HeaderToggle.Label = "Contains Header Row ()";
+            this.sheet2HeaderToggle.Label = "Contains Header Row (   )";
             this.sheet2HeaderToggle.Name = "sheet2HeaderToggle";
             this.sheet2HeaderToggle.ScreenTip = "Check if second sheet has a header/title row.";
             this.sheet2HeaderToggle.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.sheet2HeaderToggle_Click);
+            // 
+            // separator2
+            // 
+            this.separator2.Name = "separator2";
             // 
             // CompareListsButton
             // 
@@ -166,6 +179,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown sheet2DropDown;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton sheet1HeaderToggle;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton sheet2HeaderToggle;
+        private Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton1;
+        private Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton2;
     }
 
     partial class ThisRibbonCollection

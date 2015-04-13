@@ -20,13 +20,13 @@ namespace ListProcessingExcelPlugin
         {
             get
             {
-                return Globals.ThisAddIn.Application; // (Marshal.GetActiveObject("Excel.Application") as Excel.Application);
+                return Globals.ThisAddIn.Application;
             }
         }
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-            
+
         }
 
 
@@ -58,10 +58,6 @@ namespace ListProcessingExcelPlugin
         }
 
 
-        private void sheet1DropDown_ButtonClick(object sender, RibbonControlEventArgs e)
-        {
-            RepopulateSheetDropDowns();
-        }
 
         #endregion
 
@@ -72,12 +68,32 @@ namespace ListProcessingExcelPlugin
         //--------------------------------------------------------------------------
         #region
 
+        /// <summary>
+        /// Refreshes the list of sheets in the drop downs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sheet1DropDown_ButtonClick(object sender, RibbonControlEventArgs e)
+        {
+            if (e.Control.Id == "refreshButton1")
+                RepopulateSheetDropDowns();
+        }
 
+        private void sheet2DropDown_ButtonClick(object sender, RibbonControlEventArgs e)
+        {
+            if (e.Control.Id == "refreshButton2")
+                RepopulateSheetDropDowns();
+        }
+
+
+        /// <summary>
+        /// Removes all extraneous white space and commas from the textbox.
+        /// i.e. a  ,b,,c = a,b,c
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Sheet1Range_TextChanged(object sender, RibbonControlEventArgs e)
         {
-            // Update the label to match the corresponding sheet name
-            //UpdateLabels();
-
             string sheet1Columns = (sender as RibbonEditBox).Text;
 
             // Remove all white space and extra commas from the edit box text
@@ -92,8 +108,6 @@ namespace ListProcessingExcelPlugin
 
         private void Sheet2Range_TextChanged(object sender, RibbonControlEventArgs e)
         {
-            //UpdateLabels();
-
             string sheet2Columns = (sender as RibbonEditBox).Text;
 
             // Remove all white space and extra commas from the edit box text
@@ -106,17 +120,22 @@ namespace ListProcessingExcelPlugin
             SelectColumnsInRange(sheet2, (sender as RibbonEditBox).Text);
         }
 
-        private void UpdateLabels()
+        /// <summary>
+        /// Changes the button's label to indicate if it is checked or not
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void sheet1HeaderToggle_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
-            sheet1RangeBox.Label = sheet1.Name + " Columns";
-
-            if (ExcelApp.Worksheets.Count > 1)
-            {
-                Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
-                sheet2RangeBox.Label = sheet2.Name + " Columns";
-            }
+            sheet1HeaderToggle.Label = sheet1HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row (   )";
         }
+
+        private void sheet2HeaderToggle_Click(object sender, RibbonControlEventArgs e)
+        {
+            sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row (   )";
+        }
+
+
 
         private void CompareSheetsButton_Click(object sender, RibbonControlEventArgs e)
         {
@@ -141,7 +160,7 @@ namespace ListProcessingExcelPlugin
                 {
                     List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
                     List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet2ColumnArray, sheet1ColumnArray, sheet2HeaderRow, sheet1HeaderRow);
-                    DisplayResults(sheet1Indices, sheet2Indices, sheet1HeaderRow);
+                    DisplayResults(sheet1, sheet2, sheet1Indices, sheet2Indices, sheet1HeaderRow, sheet2HeaderRow);
                 }
                 else
                 {
@@ -194,6 +213,7 @@ namespace ListProcessingExcelPlugin
                 return false;
             }
 
+            // Make sure the user has not selected the same sheet in both drop downs
             if (sheet1DropDown.SelectedItemIndex == sheet2DropDown.SelectedItemIndex)
             {
                 MessageBox.Show("The first and second sheets cannot be the same");
@@ -297,13 +317,12 @@ namespace ListProcessingExcelPlugin
             return sheetIndices;
         }
 
-        private void DisplayResults(List<int> sheet1Indices, List<int> sheet2Indices, bool headerRow)
+        private void DisplayResults(Excel.Worksheet sheet1, Excel.Worksheet sheet2, List<int> sheet1Indices, List<int> sheet2Indices, bool sheet1HeaderRow, bool sheet2HeaderRow)
         {
-            // Create a new sheet and place it immediately after the second sheet. Get a reference to the new sheet
-            Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
-            Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
-            ExcelApp.Worksheets.Add(Type.Missing, sheet2);
-            Excel.Worksheet resultsSheet = ExcelApp.Worksheets[3];
+            // Create a new sheet and place it at the end of all other sheets. Get a reference to the new sheet
+            Excel.Worksheet lastSheet = ExcelApp.Worksheets[ExcelApp.Worksheets.Count];
+            ExcelApp.Worksheets.Add(Type.Missing, lastSheet);
+            Excel.Worksheet resultsSheet = ExcelApp.Worksheets[ExcelApp.Worksheets.Count];
 
 
             bool anyDifferenceSheets = false;
@@ -326,13 +345,13 @@ namespace ListProcessingExcelPlugin
 
             int currResultsRowIndex = 1;
 
-            // Get the number of columns used by the header
+            // Get the number of columns used by the header. The larger count will determine the size of the sheet names column widths
             int sheet1ColumnsCount = sheet1.UsedRange.Columns.Count;
             int sheet2ColumnsCount = sheet2.UsedRange.Columns.Count;
-            //string lastColumnLetter = GetColNameFromIndex(resultsColumnsCount);
+            int chosenColumnCount = (sheet1ColumnsCount > sheet2ColumnsCount) ? sheet1ColumnsCount : sheet2ColumnsCount;
 
             // Display the first sheet's name on the first row
-            Range sheet1Name = resultsSheet.get_Range("A1", GetColNameFromIndex(sheet1ColumnsCount) + "1");
+            Range sheet1Name = resultsSheet.get_Range("A1", GetColNameFromIndex(chosenColumnCount) + "1");
             sheet1Name.Merge();
             sheet1Name.Font.Bold = true;
             sheet1Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
@@ -340,7 +359,7 @@ namespace ListProcessingExcelPlugin
             currResultsRowIndex++;
 
             // Copy the header over, if there is one
-            if (headerRow)
+            if (sheet1HeaderRow)
             {
                 Range header = sheet1.Rows[1];
                 Range resultsHeader = resultsSheet.Rows[currResultsRowIndex];
@@ -351,7 +370,7 @@ namespace ListProcessingExcelPlugin
             // Copy all of the rows from the first sheet to the new sheet
             int sheet1RowsCount = sheet1.UsedRange.Rows.Count;
 
-            for (int i = (!headerRow) ? 1 : 2; i <= sheet1RowsCount; i++)
+            for (int i = (!sheet1HeaderRow) ? 1 : 2; i <= sheet1RowsCount; i++)
             {
                 if (sheet1Indices.Contains(i))
                 {
@@ -365,7 +384,7 @@ namespace ListProcessingExcelPlugin
 
 
             // Display the second sheet's name on the first row
-            Range sheet2Name = resultsSheet.get_Range("A" + currResultsRowIndex.ToString(), GetColNameFromIndex(sheet2ColumnsCount) + currResultsRowIndex.ToString());
+            Range sheet2Name = resultsSheet.get_Range("A" + currResultsRowIndex.ToString(), GetColNameFromIndex(chosenColumnCount) + currResultsRowIndex.ToString());
             sheet2Name.Merge();
             sheet2Name.Font.Bold = true;
             sheet2Name.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
@@ -373,7 +392,7 @@ namespace ListProcessingExcelPlugin
             currResultsRowIndex++;
 
             // Copy the header over, if there is one
-            if (headerRow)
+            if (sheet2HeaderRow)
             {
                 Range header = sheet2.Rows[1];
                 Range resultsHeader = resultsSheet.Rows[currResultsRowIndex];
@@ -384,7 +403,7 @@ namespace ListProcessingExcelPlugin
             // Copy all of the rows from the second sheet to the new sheet
             int sheet2RowsCount = sheet2.UsedRange.Rows.Count;
 
-            for (int i = (!headerRow) ? 1 : 2; i <= sheet2RowsCount; i++)
+            for (int i = (!sheet2HeaderRow) ? 1 : 2; i <= sheet2RowsCount; i++)
             {
                 if (sheet2Indices.Contains(i))
                 {
@@ -414,14 +433,8 @@ namespace ListProcessingExcelPlugin
 
         #endregion
 
-        private void sheet1HeaderToggle_Click(object sender, RibbonControlEventArgs e)
-        {
-            sheet1HeaderToggle.Label = sheet1HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ( )";
-        }
+        
 
-        private void sheet2HeaderToggle_Click(object sender, RibbonControlEventArgs e)
-        {
-            sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ( )";
-        }
+
     }
 }
