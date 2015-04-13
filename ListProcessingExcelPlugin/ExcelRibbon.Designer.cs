@@ -151,6 +151,7 @@
             this.helpButton.Label = "Help";
             this.helpButton.Name = "helpButton";
             this.helpButton.ShowImage = true;
+            this.helpButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.helpButton_Click);
             // 
             // ExcelRibbon
             // 

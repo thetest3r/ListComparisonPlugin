@@ -14,6 +14,7 @@ namespace ListProcessingExcelPlugin
 {
     public partial class ExcelRibbon
     {
+        HelpDialog helpDialog = new HelpDialog();
         private static int differencesSheetsCounter = 0;
 
         public Excel.Application ExcelApp
@@ -102,7 +103,18 @@ namespace ListProcessingExcelPlugin
 
             (sender as RibbonEditBox).Text = sheet1Columns;
 
-            Excel.Worksheet sheet1 = ExcelApp.Worksheets[1];
+            string sheet1Name = sheet1DropDown.SelectedItem.Label;
+            Excel.Worksheet sheet1 = null;
+
+            foreach (Excel.Worksheet sheet in ExcelApp.Worksheets)
+            {
+                if (sheet.Name == sheet1Name)
+                {
+                    sheet1 = sheet;
+                    break;
+                }
+            }
+
             SelectColumnsInRange(sheet1, (sender as RibbonEditBox).Text);
         }
 
@@ -116,7 +128,17 @@ namespace ListProcessingExcelPlugin
 
             (sender as RibbonEditBox).Text = sheet2Columns;
 
-            Excel.Worksheet sheet2 = ExcelApp.Worksheets[2];
+            string sheet2Name = sheet1DropDown.SelectedItem.Label;
+            Excel.Worksheet sheet2 = null;
+
+            foreach (Excel.Worksheet sheet in ExcelApp.Worksheets)
+            {
+                if (sheet.Name == sheet2Name)
+                {
+                    sheet2 = sheet;
+                    break;
+                }
+            }
             SelectColumnsInRange(sheet2, (sender as RibbonEditBox).Text);
         }
 
@@ -135,10 +157,14 @@ namespace ListProcessingExcelPlugin
             sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row (   )";
         }
 
+        /// <summary>
+        /// Display the help dialog
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void helpButton_Click(object sender, RibbonControlEventArgs e)
         {
-            HelpDialog Form = new HelpDialog();
-            Form.Show();
+            helpDialog.Show();
         }
 
 
@@ -438,6 +464,11 @@ namespace ListProcessingExcelPlugin
         }
 
         #endregion
+
+        private void helpButton_Click_1(object sender, RibbonControlEventArgs e)
+        {
+
+        }
 
     }
 }

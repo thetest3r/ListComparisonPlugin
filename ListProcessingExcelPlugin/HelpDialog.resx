@@ -117,14 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBox1.Text" xml:space="preserve">
-    <value>   Here are the tips that can assest you with this plug-in. Sheet 1 and Sheet 
-2 can be change from the sheet tabs you chosen on the drop down menu.
- You can also specify certain columns on either, but make sure that there
- is the same amount of columns on both sheets. The Compare Lists button
- will execute the process. If there is the same name,it will be delete from 
-both sheets, but if the names are different, then the both sheets will keep 
-those names. 
-</value>
+  <data name="label4.Text" xml:space="preserve">
+    <value>2. Specify a comma-separated and order-sensitive list of columns for both sheets that you 
+    want compared. For example, using 'a,b,c' and 'b,a,c' for the first and second sheet's, 
+    respectively, will provide different results than using 'a,b,c' for both sheets. The number 
+    of columns for each sheet do not have to be the same.</value>
   </data>
+  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
 </root>
