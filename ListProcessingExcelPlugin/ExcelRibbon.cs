@@ -423,5 +423,11 @@ namespace ListProcessingExcelPlugin
         {
             sheet2HeaderToggle.Label = sheet2HeaderToggle.Checked ? "Contains Header Row (✔)" : "Contains Header Row ( )";
         }
+
+        private void helpButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            HelpDialog Form = new HelpDialog();
+            Form.Show();
+        }
     }
 }

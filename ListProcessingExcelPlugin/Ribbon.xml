@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2006/01/customui">
+    <ribbon>
+        <tabs>
+            <tab idMso="TabAddIns">
+                <group id="CommandsGroup" label="List Comparison">
+                    <dropDown id="sheet1DropDown" label="Sheet 1" showImage="false" />
+                    <editBox id="sheet1RangeBox" onChange="Sheet1Range_TextChanged" supertip="The columns being compared (separated by commas) i.e. a,d,b" label="Columns" showImage="false" />
+                    <toggleButton id="sheet1HeaderToggle" onAction="sheet1HeaderToggle_Click" screentip="Check if first sheet has a header/title row." label="Contains Header Row ()" showImage="false" />
+                    <separator id="separator1" />
+                    <dropDown id="sheet2DropDown" label="Sheet 2" showImage="false" />
+                    <editBox id="sheet2RangeBox" onChange="Sheet2Range_TextChanged" supertip="The columns being compared (separated by commas) i.e. a,c,b" label="Columns" showImage="false" />
+                    <toggleButton id="sheet2HeaderToggle" onAction="sheet2HeaderToggle_Click" screentip="Check if second sheet has a header/title row." label="Contains Header Row ()" showImage="false" />
+                    <separator id="separator2" />
+                    <button id="CompareListsButton" onAction="CompareSheetsButton_Click" label="Compare Lists" size="large" />
+                    <button id="helpButton" onAction="helpButton_Click" label="Help" size="large" />
+                    <dialogBoxLauncher>
+                        <button id="CommandsGroup__btn" />
+                    </dialogBoxLauncher>
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
+</customUI>
