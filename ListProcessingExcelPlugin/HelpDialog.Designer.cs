@@ -38,6 +38,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.easterEggButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -136,17 +137,29 @@
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Location = new System.Drawing.Point(146, 401);
+            this.pictureBox4.BackgroundImage = global::ListProcessingExcelPlugin.Properties.Resources.CompareLists;
+            this.pictureBox4.Location = new System.Drawing.Point(188, 395);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox4.Size = new System.Drawing.Size(55, 71);
             this.pictureBox4.TabIndex = 11;
             this.pictureBox4.TabStop = false;
+            // 
+            // easterEggButton
+            // 
+            this.easterEggButton.Location = new System.Drawing.Point(15, 476);
+            this.easterEggButton.Name = "easterEggButton";
+            this.easterEggButton.Size = new System.Drawing.Size(75, 23);
+            this.easterEggButton.TabIndex = 12;
+            this.easterEggButton.Text = "Easter Egg?";
+            this.easterEggButton.UseVisualStyleBackColor = true;
+            this.easterEggButton.Click += new System.EventHandler(this.easterEggButton_Click);
             // 
             // HelpDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 511);
+            this.Controls.Add(this.easterEggButton);
             this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox2);
@@ -183,6 +196,7 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Button easterEggButton;
 
     }
 }

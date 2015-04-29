@@ -36,9 +36,14 @@ namespace ListProcessingExcelPlugin
 
         }
 
+        private void easterEggButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("The column numbers don't have to be equal (e.g. [a] and [a,b] \n" +
+                            "which can be used to compare comma-separated items vs not. (i.e. John Doe v.s. Doe,John)");
+        }
+
     }
 }
 
-//Make instructions for users to understand the Addin
-//{TO-DO!!!!!!}
+
 
