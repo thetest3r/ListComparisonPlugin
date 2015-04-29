@@ -142,4 +142,13 @@
   <data name="project6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\project6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="checkBoxIgnoreCapsOrChar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checkBoxIgnoreCapsOrChar.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CompareLists" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CompareLists.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HelpButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HelpButton.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
