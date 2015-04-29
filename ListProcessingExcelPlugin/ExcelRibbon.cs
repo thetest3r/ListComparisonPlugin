@@ -14,8 +14,9 @@ namespace ListProcessingExcelPlugin
 {
     public partial class ExcelRibbon
     {
-        HelpDialog helpDialog = new HelpDialog();
+        HelpDialog helpDialog = null;
         private static int differencesSheetsCounter = 0;
+
 
         public Excel.Application ExcelApp
         {
@@ -27,8 +28,8 @@ namespace ListProcessingExcelPlugin
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-
         }
+
 
 
         //--------------------------------------------------------------------------
@@ -164,7 +165,13 @@ namespace ListProcessingExcelPlugin
         /// <param name="e"></param>
         private void helpButton_Click(object sender, RibbonControlEventArgs e)
         {
+            if (helpDialog == null || helpDialog.IsDisposed)
+            {
+                helpDialog = new HelpDialog();
+            }
+
             helpDialog.Show();
+            helpDialog.Activate();
         }
 
 
@@ -174,6 +181,7 @@ namespace ListProcessingExcelPlugin
             string sheet1Name = sheet1DropDown.SelectedItem.Label, sheet2Name = sheet2DropDown.SelectedItem.Label;
             string sheet1Columns = sheet1RangeBox.Text, sheet2Columns = sheet2RangeBox.Text;
             bool sheet1HeaderRow = sheet1HeaderToggle.Checked, sheet2HeaderRow = sheet2HeaderToggle.Checked;
+            bool ignoreCaps = capsCheckBox.Checked, ignoreSpecialChars = specialCharsCheckBox.Checked;
 
             if (ValidateSheetSelection() && ValidateColumnInput(ExcelApp.Worksheets[1], sheet1Columns, true) && ValidateColumnInput(ExcelApp.Worksheets[2], sheet2Columns, true))
             {
@@ -190,13 +198,13 @@ namespace ListProcessingExcelPlugin
 
                 if (sheet1 != null && sheet2 != null)
                 {
-                    List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow);
-                    List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet2ColumnArray, sheet1ColumnArray, sheet2HeaderRow, sheet1HeaderRow);
+                    List<int> sheet1Indices = CompareLists(sheet1, sheet2, sheet1ColumnArray, sheet2ColumnArray, sheet1HeaderRow, sheet2HeaderRow, ignoreCaps, ignoreSpecialChars);
+                    List<int> sheet2Indices = CompareLists(sheet2, sheet1, sheet2ColumnArray, sheet1ColumnArray, sheet2HeaderRow, sheet1HeaderRow, ignoreCaps, ignoreSpecialChars);
                     DisplayResults(sheet1, sheet2, sheet1Indices, sheet2Indices, sheet1HeaderRow, sheet2HeaderRow);
                 }
                 else
                 {
-                    MessageBox.Show("Error retrieving selected sheets.");
+                    MessageBox.Show("Cannot find one or both of the selected sheets. Please refresh the sheet drop down lists.");
                 }
             }
         }
@@ -287,7 +295,7 @@ namespace ListProcessingExcelPlugin
         //--------------------------------------------------------------------------
         #region
 
-        private List<int> CompareLists(Excel.Worksheet sheet1, Excel.Worksheet sheet2, string[] sheet1Columns, string[] sheet2Columns, bool sheet1HeaderRow, bool sheet2HeaderRow)
+        private List<int> CompareLists(Excel.Worksheet sheet1, Excel.Worksheet sheet2, string[] sheet1Columns, string[] sheet2Columns, bool sheet1HeaderRow, bool sheet2HeaderRow, bool ignoreCaps, bool ignoreSpecialChars)
         {
             List<int> sheetIndices = new List<int>();
 
@@ -311,9 +319,16 @@ namespace ListProcessingExcelPlugin
                     Range cell = sheet1.get_Range(column + i.ToString()); //sheet1.Cells[i, j] as Range;
 
                     if (cell.Value != null)
-                        sheet1RowString.Append(Convert.ToString(cell.Value) + ",");
-                }
-                sheet1RowString.Replace(" ", "");
+                    {
+                        string value = Convert.ToString(cell.Value);
+
+                        if (ignoreSpecialChars)
+                            value = Regex.Replace(value, "[^0-9a-zA-Z]", "");
+
+                        sheet1RowString.Append(value + ",");
+                    }
+                        
+                }                
 
                 // Compare the row in the base sheet with every row in the compare sheet
                 for (int k = (!sheet2HeaderRow) ? 1 : 2; k <= sheet2NumOfRows; k++)
@@ -327,16 +342,35 @@ namespace ListProcessingExcelPlugin
                         Range cell = sheet2.get_Range(column + k.ToString());
 
                         if (cell.Value != null)
-                            sheet2RowString.Append(Convert.ToString(cell.Value) + ",");
+                        {
+                            string value = Convert.ToString(cell.Value);
+
+                            if (ignoreSpecialChars)
+                                value = Regex.Replace(value, "[^0-9a-zA-Z]", "");
+
+                            sheet2RowString.Append(value + ",");
+                        }
                     }
-                    sheet2RowString.Replace(" ", "");
 
                     // Compare the two rows and see if they are the same
-                    if (sheet1RowString.ToString() == sheet2RowString.ToString())
+                    if (ignoreCaps)
                     {
-                        matchFound = true;
-                        break;
+                        if (sheet1RowString.ToString().ToLower() == sheet2RowString.ToString().ToLower())
+                        {
+                            matchFound = true;
+                            break;
+                        }
                     }
+                    else
+                    {
+                        if (sheet1RowString.ToString() == sheet2RowString.ToString())
+                        {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+
+                    
                 }
 
                 // If a similar entry was not found in the other list, add it to the list
@@ -464,11 +498,6 @@ namespace ListProcessingExcelPlugin
         }
 
         #endregion
-
-        private void helpButton_Click_1(object sender, RibbonControlEventArgs e)
-        {
-
-        }
 
     }
 }

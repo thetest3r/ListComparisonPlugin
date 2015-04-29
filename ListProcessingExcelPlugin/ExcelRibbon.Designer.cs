@@ -48,6 +48,9 @@
             this.separator2 = this.Factory.CreateRibbonSeparator();
             this.CompareListsButton = this.Factory.CreateRibbonButton();
             this.helpButton = this.Factory.CreateRibbonButton();
+            this.capsCheckBox = this.Factory.CreateRibbonCheckBox();
+            this.specialCharsCheckBox = this.Factory.CreateRibbonCheckBox();
+            this.separator3 = this.Factory.CreateRibbonSeparator();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -68,6 +71,9 @@
             this.CommandsGroup.Items.Add(this.sheet2RangeBox);
             this.CommandsGroup.Items.Add(this.sheet2HeaderToggle);
             this.CommandsGroup.Items.Add(this.separator2);
+            this.CommandsGroup.Items.Add(this.capsCheckBox);
+            this.CommandsGroup.Items.Add(this.specialCharsCheckBox);
+            this.CommandsGroup.Items.Add(this.separator3);
             this.CommandsGroup.Items.Add(this.CompareListsButton);
             this.CommandsGroup.Items.Add(this.helpButton);
             this.CommandsGroup.Label = "List Comparison";
@@ -153,6 +159,20 @@
             this.helpButton.ShowImage = true;
             this.helpButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.helpButton_Click);
             // 
+            // capsCheckBox
+            // 
+            this.capsCheckBox.Label = "Ignore Caps";
+            this.capsCheckBox.Name = "capsCheckBox";
+            // 
+            // specialCharsCheckBox
+            // 
+            this.specialCharsCheckBox.Label = "Ignore Characters";
+            this.specialCharsCheckBox.Name = "specialCharsCheckBox";
+            // 
+            // separator3
+            // 
+            this.separator3.Name = "separator3";
+            // 
             // ExcelRibbon
             // 
             this.Name = "ExcelRibbon";
@@ -182,6 +202,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton sheet2HeaderToggle;
         private Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton1;
         private Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox capsCheckBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox specialCharsCheckBox;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator3;
     }
 
     partial class ThisRibbonCollection

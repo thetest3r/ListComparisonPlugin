@@ -29,7 +29,11 @@ namespace ListProcessingExcelPlugin
 
         }
 
-
+        /// <summary>
+        /// Repopulates the dropdown as the user switches between workbooks so that the current workbook's
+        /// worksheets are always displayed.
+        /// </summary>
+        /// <param name="Wb"></param>
         void Application_WorkbookActivate(Excel.Workbook Wb)
         {
             ExcelRibbon.RepopulateSheetDropDowns();
