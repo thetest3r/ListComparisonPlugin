@@ -250,7 +250,7 @@
     <ManifestKeyFile>ListComparisonPlugin_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>69F101C00F249160B9A73E3F9025D7EB2C73CCE7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>E38C6737F20A4E268DE5B41075C40C1021DB89E9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
