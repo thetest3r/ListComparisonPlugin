@@ -26,6 +26,11 @@ namespace ListProcessingExcelPlugin
             
         }
 
+        private void HelpDialog_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
 

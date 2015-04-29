@@ -29,6 +29,7 @@
     <AssemblyName>List Comparison Add-in</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
@@ -38,7 +39,6 @@
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
     <ProductName>List Comparison Add-in</ProductName>
     <PublisherName />
     <SupportUrl />
@@ -200,10 +200,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ExcelRibbon.resx">
       <DependentUpon>ExcelRibbon.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ListComparisonPlugin_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -231,6 +233,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReferencesDoc.txt" />
+    <None Include="Resources\project6.png" />
+    <None Include="Resources\Project5.PNG" />
+    <None Include="Resources\Project4.PNG" />
+    <None Include="Resources\Project3.PNG" />
+    <None Include="Resources\Project2.PNG" />
+    <None Include="Resources\Project1.PNG" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -240,10 +248,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ListProcessingExcelPlugin_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ListComparisonPlugin_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>48BE9332948E9F8C15BDDB7A206D1708DAF9AF67</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>959EF55AE5DA4FC09F067C67E18D5C8A949578E7</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
