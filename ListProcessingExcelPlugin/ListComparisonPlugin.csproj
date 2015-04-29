@@ -200,10 +200,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ExcelRibbon.resx">
       <DependentUpon>ExcelRibbon.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ListComparisonPlugin_1_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -232,7 +234,10 @@
   <ItemGroup>
     <Content Include="Project1.PNG" />
     <Content Include="ReferencesDoc.txt" />
-    <None Include="Resources\test.bmp" />
+    <None Include="Resources\Icon_39-5121.png" />
+    <None Include="Resources\HelpButton.PNG" />
+    <None Include="Resources\CompareLists.PNG" />
+    <None Include="Resources\checkBoxIgnoreCapsOrChar.PNG" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -242,10 +247,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ListProcessingExcelPlugin_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ListComparisonPlugin_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>48BE9332948E9F8C15BDDB7A206D1708DAF9AF67</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>69F101C00F249160B9A73E3F9025D7EB2C73CCE7</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
