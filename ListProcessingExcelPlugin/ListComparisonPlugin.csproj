@@ -233,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReferencesDoc.txt" />
+    <None Include="Resources\Icon_39-5121.png" />
     <None Include="Resources\HelpButton.PNG" />
     <None Include="Resources\CompareLists.PNG" />
     <None Include="Resources\checkBoxIgnoreCapsOrChar.PNG" />
