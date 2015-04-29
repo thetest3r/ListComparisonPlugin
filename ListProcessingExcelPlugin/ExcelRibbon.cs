@@ -129,7 +129,7 @@ namespace ListProcessingExcelPlugin
 
             (sender as RibbonEditBox).Text = sheet2Columns;
 
-            string sheet2Name = sheet1DropDown.SelectedItem.Label;
+            string sheet2Name = sheet2DropDown.SelectedItem.Label;
             Excel.Worksheet sheet2 = null;
 
             foreach (Excel.Worksheet sheet in ExcelApp.Worksheets)
