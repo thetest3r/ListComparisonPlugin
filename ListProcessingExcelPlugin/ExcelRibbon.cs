@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using UnidecodeSharpFork;
 
 namespace ListProcessingExcelPlugin
 {
@@ -322,13 +323,13 @@ namespace ListProcessingExcelPlugin
                     {
                         string value = Convert.ToString(cell.Value);
 
-                        if (ignoreSpecialChars)
+                        if (ignoreSpecialChars) // @"\s+"
                             value = Regex.Replace(value, "[^0-9a-zA-Z]", "");
 
                         sheet1RowString.Append(value + ",");
                     }
-                        
-                }                
+                }
+                sheet1RowString.Replace(" ", "");
 
                 // Compare the row in the base sheet with every row in the compare sheet
                 for (int k = (!sheet2HeaderRow) ? 1 : 2; k <= sheet2NumOfRows; k++)
@@ -351,26 +352,31 @@ namespace ListProcessingExcelPlugin
                             sheet2RowString.Append(value + ",");
                         }
                     }
+                    sheet2RowString.Replace(" ", "");
 
-                    // Compare the two rows and see if they are the same
+                    string sheet1Row = sheet1RowString.ToString();
+                    string sheet2Row = sheet2RowString.ToString();
+
+                    bool romanize = true;
+
                     if (ignoreCaps)
                     {
-                        if (sheet1RowString.ToString().ToLower() == sheet2RowString.ToString().ToLower())
-                        {
-                            matchFound = true;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (sheet1RowString.ToString() == sheet2RowString.ToString())
-                        {
-                            matchFound = true;
-                            break;
-                        }
+                        sheet1Row = sheet1Row.ToLower();
+                        sheet2Row = sheet2Row.ToLower();
                     }
 
-                    
+                    if (romanize)
+                    {
+                        sheet1Row = Unidecoder.Unidecode(sheet1Row);
+                        sheet2Row = Unidecoder.Unidecode(sheet2Row);
+                    }
+
+                    // Compare the two rows and see if they are the same
+                    if (sheet1Row == sheet2Row)
+                    {
+                        matchFound = true;
+                        break;
+                    }
                 }
 
                 // If a similar entry was not found in the other list, add it to the list
