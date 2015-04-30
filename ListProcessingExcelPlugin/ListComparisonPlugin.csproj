@@ -257,10 +257,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ListComparisonPlugin_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ListComparisonPlugin_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1F59C9DC27A17D98DEF965781BD629510BBD8D10</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B331E199802A5DDD7A9B6D9A791236B29EBFC481</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
