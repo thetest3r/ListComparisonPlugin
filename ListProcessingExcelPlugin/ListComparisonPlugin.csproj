@@ -189,6 +189,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Unidecode\Characters.cs" />
+    <Compile Include="Unidecode\Unidecoder.cs" />
     <EmbeddedResource Include="HelpDialog.resx">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -205,7 +207,7 @@
     <EmbeddedResource Include="ExcelRibbon.resx">
       <DependentUpon>ExcelRibbon.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="ListComparisonPlugin_1_TemporaryKey.pfx" />
+    <None Include="ListComparisonPlugin_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -232,12 +234,20 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Project1.PNG" />
     <Content Include="ReferencesDoc.txt" />
-    <None Include="Resources\Icon_39-5121.png" />
-    <None Include="Resources\HelpButton.PNG" />
-    <None Include="Resources\CompareLists.PNG" />
-    <None Include="Resources\checkBoxIgnoreCapsOrChar.PNG" />
+    <Content Include="Resources\checkBoxIgnoreCapsOrChar.PNG" />
+    <Content Include="Resources\CompareLists.PNG" />
+    <Content Include="Resources\HelpButton.PNG" />
+    <Content Include="Resources\Icon_39-512.png" />
+    <Content Include="Resources\Icon_39-5121.png" />
+    <Content Include="Resources\images.png" />
+    <Content Include="Resources\images1.png" />
+    <Content Include="Resources\Project1.PNG" />
+    <Content Include="Resources\Project2.PNG" />
+    <Content Include="Resources\Project3.PNG" />
+    <Content Include="Resources\Project4.PNG" />
+    <Content Include="Resources\Project5.PNG" />
+    <Content Include="Resources\project6.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -250,7 +260,7 @@
     <ManifestKeyFile>ListComparisonPlugin_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>E38C6737F20A4E268DE5B41075C40C1021DB89E9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1F59C9DC27A17D98DEF965781BD629510BBD8D10</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
