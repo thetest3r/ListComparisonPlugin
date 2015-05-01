@@ -15,7 +15,8 @@ namespace ListProcessingExcelPlugin
 {
     public partial class ExcelRibbon
     {
-        HelpDialog helpDialog = null;
+        private HelpDialog helpDialog;
+        private EasterEgg easterDialog;
         private static int differencesSheetsCounter = 0;
 
 
@@ -504,6 +505,17 @@ namespace ListProcessingExcelPlugin
         }
 
         #endregion
+
+        private void easterEggButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (easterDialog == null || easterDialog.IsDisposed)
+            {
+                easterDialog = new EasterEgg();
+            }
+
+            easterDialog.Show();
+            easterDialog.Activate();
+        }
 
     }
 }

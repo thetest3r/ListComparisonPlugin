@@ -180,6 +180,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="EasterEgg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EasterEgg.Designer.cs">
+      <DependentUpon>EasterEgg.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelpDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +197,9 @@
     </Compile>
     <Compile Include="Unidecode\Characters.cs" />
     <Compile Include="Unidecode\Unidecoder.cs" />
+    <EmbeddedResource Include="EasterEgg.resx">
+      <DependentUpon>EasterEgg.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HelpDialog.resx">
       <DependentUpon>HelpDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -236,12 +245,19 @@
   <ItemGroup>
     <Content Include="ReferencesDoc.txt" />
     <Content Include="Resources\checkBoxIgnoreCapsOrChar.PNG" />
+    <None Include="Resources\ResultsList.PNG" />
+    <None Include="Resources\CommaSepSheet.PNG" />
     <Content Include="Resources\CompareLists.PNG" />
+    <None Include="Resources\eecommasep.bmp" />
     <Content Include="Resources\HelpButton.PNG" />
     <Content Include="Resources\Icon_39-512.png" />
     <Content Include="Resources\Icon_39-5121.png" />
     <Content Include="Resources\images.png" />
     <Content Include="Resources\images1.png" />
+    <None Include="Resources\NormalSheet.PNG" />
+    <None Include="Resources\PluginSettings.PNG" />
+    <None Include="Resources\PluginSettings1.PNG" />
+    <None Include="Resources\PluginSettings2.PNG" />
     <Content Include="Resources\Project1.PNG" />
     <Content Include="Resources\Project2.PNG" />
     <Content Include="Resources\Project3.PNG" />

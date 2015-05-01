@@ -46,11 +46,12 @@
             this.sheet2RangeBox = this.Factory.CreateRibbonEditBox();
             this.sheet2HeaderToggle = this.Factory.CreateRibbonToggleButton();
             this.separator2 = this.Factory.CreateRibbonSeparator();
-            this.CompareListsButton = this.Factory.CreateRibbonButton();
-            this.helpButton = this.Factory.CreateRibbonButton();
             this.capsCheckBox = this.Factory.CreateRibbonCheckBox();
             this.specialCharsCheckBox = this.Factory.CreateRibbonCheckBox();
+            this.easterEggButton = this.Factory.CreateRibbonButton();
             this.separator3 = this.Factory.CreateRibbonSeparator();
+            this.CompareListsButton = this.Factory.CreateRibbonButton();
+            this.helpButton = this.Factory.CreateRibbonButton();
             this.ListProcessingTab.SuspendLayout();
             this.CommandsGroup.SuspendLayout();
             // 
@@ -73,6 +74,7 @@
             this.CommandsGroup.Items.Add(this.separator2);
             this.CommandsGroup.Items.Add(this.capsCheckBox);
             this.CommandsGroup.Items.Add(this.specialCharsCheckBox);
+            this.CommandsGroup.Items.Add(this.easterEggButton);
             this.CommandsGroup.Items.Add(this.separator3);
             this.CommandsGroup.Items.Add(this.CompareListsButton);
             this.CommandsGroup.Items.Add(this.helpButton);
@@ -141,6 +143,26 @@
             // 
             this.separator2.Name = "separator2";
             // 
+            // capsCheckBox
+            // 
+            this.capsCheckBox.Label = "Ignore Caps";
+            this.capsCheckBox.Name = "capsCheckBox";
+            // 
+            // specialCharsCheckBox
+            // 
+            this.specialCharsCheckBox.Label = "Ignore Characters";
+            this.specialCharsCheckBox.Name = "specialCharsCheckBox";
+            // 
+            // easterEggButton
+            // 
+            this.easterEggButton.Label = "Easter Egg?";
+            this.easterEggButton.Name = "easterEggButton";
+            this.easterEggButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.easterEggButton_Click);
+            // 
+            // separator3
+            // 
+            this.separator3.Name = "separator3";
+            // 
             // CompareListsButton
             // 
             this.CompareListsButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -158,20 +180,6 @@
             this.helpButton.Name = "helpButton";
             this.helpButton.ShowImage = true;
             this.helpButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.helpButton_Click);
-            // 
-            // capsCheckBox
-            // 
-            this.capsCheckBox.Label = "Ignore Caps";
-            this.capsCheckBox.Name = "capsCheckBox";
-            // 
-            // specialCharsCheckBox
-            // 
-            this.specialCharsCheckBox.Label = "Ignore Characters";
-            this.specialCharsCheckBox.Name = "specialCharsCheckBox";
-            // 
-            // separator3
-            // 
-            this.separator3.Name = "separator3";
             // 
             // ExcelRibbon
             // 
@@ -205,6 +213,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox capsCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox specialCharsCheckBox;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton easterEggButton;
     }
 
     partial class ThisRibbonCollection
